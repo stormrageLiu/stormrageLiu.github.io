@@ -100,7 +100,7 @@
 </ul>
     </div>
     <div id="toc">
-      <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#解决方案："><span class="toc-number">1.</span> <span class="toc-text">解决方案：</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#解决方案："><span class="toc-number">1.</span> <span class="toc-text">解决方案：</span></a></li></ol>
     </div>
   </span>
 </div>
@@ -128,7 +128,7 @@
                   itemprop="datePublished">2024-07-31</time>
             
                 (Updated:
-                <time datetime="2024-08-02T08:41:55.649Z"
+                <time datetime="2024-08-02T08:45:47.430Z"
                       itemprop="dateModified">2024-08-02</time>)
             
         
@@ -151,10 +151,10 @@
     
     <div class="content" itemprop="articleBody">
         <p><code>ts(1259)</code>错误。尝试从一个使用 CommonJS 模块系统（使用 <code>export =</code> 语法）的模块中进行默认导入，而 TypeScript 默认情况下不支持这种导入方式。</p>
-<h4 id="解决方案：">解决方案：</h4>
+<h2 id="解决方案：">解决方案：</h2>
 <ol>
 <li>
-<p><strong>启用 **</strong><code>esModuleInterop</code>*<strong>* 标志</strong>：在你的 <code>tsconfig.json</code> 文件中启用 <code>esModuleInterop</code> 标志。这个标志会改变 TypeScript 处理 CommonJS 模块的方式，使其支持默认导入。</p>
+<p>启用 <strong><code>esModuleInterop</code></strong> 标志：在你的 <code>tsconfig.json</code> 文件中启用 <code>esModuleInterop</code> 标志。这个标志会改变 TypeScript 处理 CommonJS 模块的方式，使其支持默认导入。</p>
 <p>在你的 <code>tsconfig.json</code> 文件中添加或修改以下配置：</p>
 <figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"compilerOptions"</span>: &#123;</span><br><span class="line">    <span class="string">"esModuleInterop"</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// 其他配置项...</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
@@ -169,8 +169,8 @@
 </ol>
 <p>如果还有问题，可以尝试以下额外的步骤：</p>
 <ol>
-<li><strong>检查 **</strong><code>upath</code>*<strong>* 模块的类型定义</strong>：确保 <code>upath</code> 模块的类型定义文件（<code>.d.ts</code> 文件）正确地使用了 <code>export =</code> 语法。如果类型定义文件不正确，你可能需要手动修复它或寻找一个正确的类型定义文件。</li>
-<li><strong>使用 **</strong><code>require</code>*<strong>* 语法</strong>：如果上述方法都不起作用，你可以尝试使用 CommonJS 的 <code>require</code> 语法来导入模块：<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">"upath"</span>);</span><br></pre></td></tr></table></figure>
+<li><strong>检查 <strong><code>upath</code></strong> 模块的类型定义</strong>：确保 <code>upath</code> 模块的类型定义文件（<code>.d.ts</code> 文件）正确地使用了 <code>export =</code> 语法。如果类型定义文件不正确，你可能需要手动修复它或寻找一个正确的类型定义文件。</li>
+<li><strong>使用 <strong><code>require</code></strong> 语法</strong>：如果上述方法都不起作用，你可以尝试使用 CommonJS 的 <code>require</code> 语法来导入模块：<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">"upath"</span>);</span><br></pre></td></tr></table></figure>
 这种方法不需要启用 <code>esModuleInterop</code> 标志，但会失去 TypeScript 的模块系统的一些优势。</li>
 </ol>
 
@@ -228,7 +228,7 @@
         </div>
 
         <div id="toc-footer" style="display: none">
-            <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#解决方案："><span class="toc-number">1.</span> <span class="toc-text">解决方案：</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#解决方案："><span class="toc-number">1.</span> <span class="toc-text">解决方案：</span></a></li></ol>
         </div>
 
         <div id="share-footer" style="display: none">
