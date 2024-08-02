@@ -133,8 +133,8 @@
                   itemprop="datePublished">2021-01-11</time>
             
                 (Updated:
-                <time datetime="2021-01-18T01:46:46.000Z"
-                      itemprop="dateModified">2021-01-18</time>)
+                <time datetime="2024-08-02T08:47:57.518Z"
+                      itemprop="dateModified">2024-08-02</time>)
             
         
     </div>
@@ -163,12 +163,12 @@
 <li>Unity Studio -资源替换</li>
 <li>Unity AssetBundle Extractor-资源替换</li>
 <li>apktool-解包/打包/签名</li>
-<li>Android逆向助手-签名(偷懒选手）</li>
+<li>Android 逆向助手-签名(偷懒选手）</li>
 </ul>
 <p><code>这次测试的环境用的win7. 我本人没有 Windows 机器，是在 PD 上装的 Windows 虚拟机</code><br>
-<a href="https://gitee.com/zzRong/tools/blob/master/unity%20%E5%8F%8D%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7.zip" target="_blank" rel="noopener">本文用到的unity反编译工具</a></p>
+<a href="https://gitee.com/zzRong/tools/blob/master/unity%20%E5%8F%8D%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7.zip" target="_blank" rel="noopener">本文用到的 unity 反编译工具</a></p>
 <h2 id="解包">解包</h2>
-<p>Untiy 主要的代码会编译成一个 dll 文件，名称为<code>Assembly-CSharp.dll</code>。我们要做的就是反编译这个文件。那么第一步，是解压 apk 包。 有不少教程会说可以直接改成 zip，用自带工具解压。但经过我尝试之后，发现这样的确可以成功解包，但是这样解出来的包，再之后重新打回APK时，运行时是有问题的。因此，我更推荐使用 apktool 进行解包。</p>
+<p>Untiy 主要的代码会编译成一个 dll 文件，名称为<code>Assembly-CSharp.dll</code>。我们要做的就是反编译这个文件。那么第一步，是解压 apk 包。 有不少教程会说可以直接改成 zip，用自带工具解压。但经过我尝试之后，发现这样的确可以成功解包，但是这样解出来的包，再之后重新打回 APK 时，运行时是有问题的。因此，我更推荐使用 apktool 进行解包。</p>
 <p>下载与安装方法官方地址都有给 :<a href="https://ibotpeaches.github.io/Apktool/install/" target="_blank" rel="noopener">Apktool - How to Install</a>。安装好之后，用命令解包就行。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apktool d xxxxx包名字.apk</span><br></pre></td></tr></table></figure>
 <p>解压完之后，<code>Assembly-CSharp.dll</code>的目录就在<code>解包后目录/assets/bin/Data/Managed/Assembly-CSharp.dll</code></p>
@@ -184,8 +184,8 @@
 找图集可以用 Unity Studio 这个工具。<br>
 <img src="https://gitee.com/zzRong/MyPics/raw/master/img/%E5%8F%8D%E7%BC%96%E8%AF%91%E8%B5%84%E6%BA%90%E5%AE%9A%E4%BD%8D%E5%9B%BE%E9%9B%86.jpg" alt=""><br>
 在 Asset List 页签下能看到所有的资源列表。这里可以用上面的筛选框进行关键字检索。<br>
-比如这里需要替换掉某个图标，就可以尝试直接去搜 icon。然后在对应的这个 item 上直接右键，选择  <code>show original file</code> ，就可以定位到对应的资源了。</p>
-<p>那么下一步，就是替换这个资源内的小图纹理。可以使用  Unity Asset Bundle Extractor 打开该文件。<br>
+比如这里需要替换掉某个图标，就可以尝试直接去搜 icon。然后在对应的这个 item 上直接右键，选择 <code>show original file</code> ，就可以定位到对应的资源了。</p>
+<p>那么下一步，就是替换这个资源内的小图纹理。可以使用 Unity Asset Bundle Extractor 打开该文件。<br>
 这里会发现一个图，包含了一个 Sprite 和一个 Texture。 做游戏的肯定都知道，我们要换的就是这个 Texture。选择 Plugins 替换掉对应的图片资源即可。<br>
 对应步骤如图：</p>
 <p><img src="https://gitee.com/zzRong/MyPics/raw/master/img/%E5%8F%8D%E7%BC%96%E8%AF%91%E6%9B%BF%E6%8D%A2%E8%B5%84%E6%BA%90.png" alt=""></p>
@@ -197,7 +197,7 @@
 <p>当然，如果你为了可以能真机运行，我们还需要对应用进行签名，这里可以偷懒一下，我是在网上上搜一些工具，我这用的是 <code>Android 逆向助手</code>，直接把包扔进去操作就大功告成了。<br>
 <img src="https://gitee.com/zzRong/MyPics/raw/master/img/%E5%AE%89%E5%8D%93%E9%80%86%E5%90%91%E5%8A%A9%E6%89%8B%E6%88%AA%E5%9B%BE.jpg" alt=""></p>
 <h2 id="End">End</h2>
-<p>这篇文章仅用作学习之用，记录一下对一些没有加密的 unity 工程的逆向过程。可以发现如果游戏不做加密措施，不做代码混淆，可以很简单的就被Crack掉。</p>
+<p>这篇文章仅用作学习之用，记录一下对一些没有加密的 unity 工程的逆向过程。可以发现如果游戏不做加密措施，不做代码混淆，可以很简单的就被 Crack 掉。</p>
 <p>这里是安卓的反编译，这种没加密的还是很简单的。 自己还研究了一下 iOS 的反编译。它的方式就和安卓这种方式完全不一样，采用的是动态库注入的方式。</p>
 <p>先埋坑，之后有时间，再填上~~</p>
 
