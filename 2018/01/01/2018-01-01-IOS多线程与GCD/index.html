@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    
+    
+        
+            
+                <link rel="shortcut icon" href="/images/favicon.ico">
+            
+        
+        
+            
+                <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+            
+        
+        
+            
+                <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+            
+        
+    
+    <!-- title -->
+    <title>多线程与GCD</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+SC&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@2/distr/fira_code.css" rel="stylesheet">
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+
+    <div id="header-post">
+    <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+    <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i
+                class="fas fa-chevron-up fa-lg"></i></a>
+    <span id="menu">
+    <span id="nav">
+      <ul>
+          
+              <li><a href="/">首页</a></li>
+          
+              <li><a href="/archives/">归档</a></li>
+          
+              <li><a href="/categories/">分类</a></li>
+          
+              <li><a href="/tags/">标签</a></li>
+          
+              <li><a href="/about/">关于</a></li>
+          
+              <li><a href="/search/">搜索</a></li>
+          
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+          
+              <li><a class="icon" href="/2018/02/04/2018-02-04-%E6%B8%B8%E6%88%8F%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%881%EF%BC%89-update%E6%96%B9%E6%B3%95/"><i class="fas fa-chevron-left"
+                                                                           aria-hidden="true"
+                                                                           onmouseover="$('#i-prev').toggle();"
+                                                                           onmouseout="$('#i-prev').toggle();"></i></a></li>
+          
+          
+              <li><a class="icon" href="/2017/12/15/2017-12-15-Block(2)--Block%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/"><i class="fas fa-chevron-right"
+                                                                           aria-hidden="true"
+                                                                           onmouseover="$('#i-next').toggle();"
+                                                                           onmouseout="$('#i-next').toggle();"></i></a></li>
+          
+          <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i
+                          class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();"
+                          onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true"
+                                        onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();"
+                                        onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+    <li><a class="icon"
+           href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2018/01/01/2018-01-01-IOS%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8EGCD/&title=多线程与GCD"><i
+                    class="fab fa-qq " aria-hidden="true"></i></a></li>
+    <li><a class="icon"
+           href="https://service.weibo.com/share/share.php?url=http://yoursite.com/2018/01/01/2018-01-01-IOS%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8EGCD/&title=多线程与GCD"><i
+                    class="fab fa-weibo " aria-hidden="true"></i></a></li>
+    <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2018/01/01/2018-01-01-IOS%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8EGCD/&text=多线程与GCD" target="_blank" rel="noopener"><i
+                    class="fab fa-twitter " aria-hidden="true"></i></a></li>
+    <li><a class="icon" href="mailto:?subject=多线程与GCD&body=Check out this article: http://yoursite.com/2018/01/01/2018-01-01-IOS%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8EGCD/"><i
+                    class="fas fa-envelope " aria-hidden="true"></i></a></li>
+</ul>
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#多线程概述"><span class="toc-number">1.</span> <span class="toc-text">多线程概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GCD-API总结"><span class="toc-number">2.</span> <span class="toc-text">GCD_API总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#创建Dispatch-queue"><span class="toc-number">2.1.</span> <span class="toc-text">创建Dispatch_queue</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Main-Dispatch-Queue"><span class="toc-number">2.2.</span> <span class="toc-text">Main Dispatch Queue</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Global-Dispatch-Queue"><span class="toc-number">2.3.</span> <span class="toc-text">Global Dispatch Queue</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#变更优先级"><span class="toc-number">2.4.</span> <span class="toc-text">变更优先级</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#延迟加入到线程中"><span class="toc-number">2.5.</span> <span class="toc-text">延迟加入到线程中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多个处理结束的回调"><span class="toc-number">2.6.</span> <span class="toc-text">多个处理结束的回调</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#线程提供阻塞等待"><span class="toc-number">2.7.</span> <span class="toc-text">线程提供阻塞等待</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#线程同步"><span class="toc-number">2.8.</span> <span class="toc-text">线程同步</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#挂起和恢复Dispatch-Queue"><span class="toc-number">2.9.</span> <span class="toc-text">挂起和恢复Dispatch Queue</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#信号量控制并发"><span class="toc-number">2.10.</span> <span class="toc-text">信号量控制并发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#执行一次"><span class="toc-number">2.11.</span> <span class="toc-text">执行一次</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#读取大文件的操作"><span class="toc-number">2.12.</span> <span class="toc-text">读取大文件的操作</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+<div class="content index py4">
+    
+    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+        
+    <h1 class="posttitle" itemprop="name headline">
+        多线程与GCD
+    </h1>
+
+        <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">
+            展荣
+            
+        </span>
+      </span>
+            
+    <div class="postdate">
+        
+            <time datetime="2017-12-31T16:00:00.000Z"
+                  itemprop="datePublished">2018-01-01</time>
+            
+        
+    </div>
+
+            
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Objective-C/">Objective-C</a>
+    </div>
+
+            
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/iOS/" rel="tag">iOS</a>
+    </div>
+
+        </div>
+    </header>
+    
+    <div class="content" itemprop="articleBody">
+        <p>通俗来说就是可以同时做N个事情。不用等待上一步的完成状态形成阻塞、例如在交互等操作和大文件读取操作在不同线程进行。可在执行保证长时间的文件处理时依旧能保证用户的响应。</p>
+<h2 id="多线程概述">多线程概述</h2>
+<p>从第一次接触计算机编程会用C语言写HelloWorld的时候开始，就被告诉代码通过编译、链接最终形成可执行代码（可执行文件）。而这些可执行的代码在机器上执行时，必然是有序的一条一条的执行<strong>CPU命令列</strong>。几遍遇到for循环或者goto这样的语句。<strong>命令列</strong>也不是出现分叉口而同时执行。</p>
+<blockquote>
+<p>上面的是典型的单线程，那如何在多条路径中执行CPU命令列呢？</p>
+</blockquote>
+<ol>
+<li>上下文切换：保存CPU当前的寄存器等信息到不同命令列的内存中。由系统控制每固定时间间隔进行一次复原操切换的操作</li>
+<li>使用多核CPU。</li>
+</ol>
+<p>前者是给你看起来像多线程处理信息。后者则是真正的多线程。<br>
+在OC中多线程进行开发的技术有很多，这篇主要讲常用的GCD。子所以大家更愿意用GCD，先看下各个多线程技术之间的特点比较：<br>
+<img src="https://gitee.com/zzRong/MyPics/raw/master/img/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF%E7%9A%84%E6%AF%94%E8%BE%83.png" alt=""></p>
+<h2 id="GCD-API总结">GCD_API总结</h2>
+<p><img src="https://gitee.com/zzRong/MyPics/raw/master/img/%E4%B8%B2%E5%B9%B6%E8%A1%8C%E7%9A%84%E5%BC%82%E5%90%8C.png" alt=""></p>
+<p>在GCD的官方说明中：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">dispatch_async</span>&#123; queue, ^&#123;</span><br><span class="line">	<span class="comment">//想执行的任务</span></span><br><span class="line">	&#125;）;</span><br></pre></td></tr></table></figure>
+<p><strong>开发者要做的只是定义想执行的任务追加到Dispatch_queue中</strong><br>
+那么这个Dispatch_queue其实就是一个执行任务的等待队列（先进先出）<br>
+而队列分为串行（Serial Dispatch Queue）和并行（Concurrent Dispatch Queue）两种。</p>
+<h3 id="创建Dispatch-queue">创建Dispatch_queue</h3>
+<blockquote>
+<p>dispatch_queue_create(const char *label, dispatch_queue_attr_t attr)；</p>
+</blockquote>
+<ul>
+<li>参数1:该Dispatch_queue的标识符，用于线程调试（比较多线程容易造成更累问题，例如不同进程访问相同一份数据）</li>
+<li>参数2:队列类型。创建串行设置成<strong>DISPATCH_QUEUE_SERIAL</strong>或<strong>NULL</strong>即可。创建Concurrent Dispatch Queue设置成<strong>DISPATCH_QUEUE_CONCURRENT</strong></li>
+</ul>
+<p>除了每次创建，还可以通过系统提供的Disptach Queue。</p>
+<h3 id="Main-Dispatch-Queue">Main Dispatch Queue</h3>
+<p>在主线程的中执行，属于串行类型。会追加到主线程的RunLoop中执行。主要用户界面刷新操作一般放在该队列中执行。</p>
+<blockquote>
+<p>获取方式：dispatch_get_main_queue();</p>
+</blockquote>
+<h3 id="Global-Dispatch-Queue">Global Dispatch Queue</h3>
+<p>属于并行类型，拥有四个优先级。获取方式分别为：</p>
+<blockquote>
+<p>最高优先级：dispatch_get_goobal_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);</p>
+</blockquote>
+<blockquote>
+<p>默认优先级：dispatch_get_goobal_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);</p>
+</blockquote>
+<blockquote>
+<p>低优先级：dispatch_get_goobal_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0);</p>
+</blockquote>
+<blockquote>
+<p>后台优先级：dispatch_get_goobal_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);</p>
+</blockquote>
+<h3 id="变更优先级">变更优先级</h3>
+<p>默认创建的任何Dispatch Queue的优先级都是属于默认为DISPATCH_QUEUE_PRIORITY_DEFAULT。变更优先级的方法为：</p>
+<blockquote>
+<p>dispatch_set_target_queue(dispatch_queue_t queue1, dispatch_queue_t queue2);</p>
+</blockquote>
+<ul>
+<li>参数1：需要设置的dispatch queue</li>
+<li>参数2：需要设置的参照dispatch queue</li>
+</ul>
+<h3 id="延迟加入到线程中">延迟加入到线程中</h3>
+<p>这里延迟加入和延迟执行为2个概念。加入延迟3秒加入到一个串行Dispatch queue中，而该Dispatch queue中还有很多没处理完的任务。那么久这个时间就会&gt;3秒。</p>
+<blockquote>
+<p>dispatch_after(dispatch_time_t time, dispatch_queue_t queue, ^{});</p>
+</blockquote>
+<ul>
+<li>参数1：为延迟追加的时间</li>
+<li>参数2：为需要追加的Dispatch queue</li>
+<li>参数3：为需要执行的处理动作</li>
+</ul>
+<p>对于第一个参数的类型也有对应的生成办法</p>
+<blockquote>
+<p>dispatch_time_t(dispatch_time_t time, unsinged long long t);</p>
+</blockquote>
+<ul>
+<li>参数1：为指定的开始时间</li>
+<li>参数2：为到t时间之后。</li>
+</ul>
+<p>例如:</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//表示从当前时间开始3**秒**后的时间</span></span><br><span class="line">dispatch_time_t（DISPATCH_TIME_NOW, <span class="number">3</span>nul * <span class="built_in">NSEC_PER_SEC</span>);</span><br><span class="line"><span class="comment">//表示从当前时间开始300**毫秒**后的时间</span></span><br><span class="line">dispatch_time_t（DISPATCH_TIME_NOW, <span class="number">300</span>nul * <span class="built_in">NSEC_PER_MSEC</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="多个处理结束的回调">多个处理结束的回调</h3>
+<p>1、如果是只使用一个串行Dispatch queue，只需要在将希望执行的处理放在最后<br>
+2、使用多个Dispatch queue或者使用多个并行Dispatch queue。则需要使用Dispatch Group来轻松实现该需求。</p>
+<blockquote>
+<ol>
+<li>dispatch_group_create();//创建Dispatch Group</li>
+</ol>
+</blockquote>
+<ul>
+<li>ispatch Group 与 Dispatch queue相同</li>
+</ul>
+<blockquote>
+<ol start="2">
+<li>dispatch_group_async(dispatch_group_t group, dispatch_queue_t queue, ^{});//添加到Group</li>
+</ol>
+</blockquote>
+<ul>
+<li>参数1：需要追加到的Dispatch Queue</li>
+<li>参数2：需要执行的处理动作</li>
+</ul>
+<blockquote>
+<ol start="3">
+<li>dispatch_group_notify(dispatch_group_t group, dispatch_queue_t queue, ^{});//注册需要执行的动作到目标线程</li>
+</ol>
+</blockquote>
+<ul>
+<li>参数1：指定需要监听的group</li>
+<li>参数2：被追加需要执行动作的Dispatch Queue</li>
+<li>参数3：期望参数1group内全部执行处理结束后的回掉操作</li>
+</ul>
+<blockquote>
+<ol start="4">
+<li>dispatch_group_wait(dispatch_group_t group,dispatch_time_t time);//time时间内等待全部处理执行结束返回0。</li>
+</ol>
+</blockquote>
+<ul>
+<li>参数1：指定需要监听的group</li>
+<li>参数2：等待时间。设置成DISPATCH_TIME_FOREVER为永久等待。</li>
+</ul>
+<h3 id="线程提供阻塞等待">线程提供阻塞等待</h3>
+<p>由于线程之间会导致数据竞争等问题。例如在读取和写入的操作上就会存在读取和写入的并行执行产生冲突。解决方式有：<br>
+1、使用串行Dispatch queue。<br>
+2、读取不与写入处理并行执行。<br>
+3、使用dispatch_barrier_async。<br>
+这里第三种解决办法是GCD提供的一个较为方便的方式。可以等到插入的位置之前所有操作完成之后，在执行插入的处理，当插入的处理操作执行结束后，再恢复之前的操作。具体示意图如下：</p>
+<p><img src="https://gitee.com/zzRong/MyPics/raw/master/img/dispatch_barrier%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt=""></p>
+<blockquote>
+<p>dispatch_barrier_async(dispatch_queue_t queue, ^{});</p>
+</blockquote>
+<ul>
+<li>参数1:需要插入到的dispatch queue</li>
+<li>参数2:需要插入的操作</li>
+</ul>
+<h3 id="线程同步">线程同步</h3>
+<blockquote>
+<ol>
+<li>dispatch_sync（dispatch_queue_t queue, ^{});//等待追加的Block执行结束</li>
+</ol>
+</blockquote>
+<ul>
+<li>参数1：需要追加的Dispatch queue</li>
+<li>参数2：需要执行的处理动作</li>
+</ul>
+<p>由于等到到当前线程停止，那么就很容易导致“死锁”问题。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">dispatch_queue_t</span> queue = dispatch_get_main_queue();</span><br><span class="line"><span class="built_in">dispatch_sync</span>(queue, ^&#123;<span class="built_in">NSLog</span>(<span class="string">"hello world"</span>);&#125;);</span><br></pre></td></tr></table></figure>
+<p>主线程中执行Block，并等待其执行结束。而主线程正在执行这些代码。无法执行该Block。</p>
+<blockquote>
+<ol start="2">
+<li>dispatch_apply(UInt iterations,dispatch_queue_t queue, ^{});//按将Block指定次数iterations追加到queue中。</li>
+</ol>
+</blockquote>
+<ul>
+<li>参数1：重复次数</li>
+<li>参数2：追加对象的Dispatch Queue</li>
+<li>参数3：追加的处理Block</li>
+</ul>
+<p>使用这个特性可以模拟一个for循环对一个array类对象的所有元素执行处理：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">dispatch_queue_t</span> queue = dispatch_get_global_queue(DISPATCH_PRIORITY_DEFAULT,<span class="number">0</span>);</span><br><span class="line">dispatch_apply([array count] queue ^(size_t index)&#123;<span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,[array objectAtIndex:index]);&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="挂起和恢复Dispatch-Queue">挂起和恢复Dispatch Queue</h3>
+<p>当希望已追加到Dispatch Queue的操作不执行时，可以直接dispatch_suspend挂起该Dispatch Queue。然后再在适当的时机通过dispatch_resume来回复该Dispatch Queue。</p>
+<h3 id="信号量控制并发">信号量控制并发</h3>
+<p>一般开发中，当线程数量达到一定数量后，会使用NSOperationQueue来控制并发。而在GCD中采用的是Dispatch Semaphore。先来看信号量的概念：</p>
+<blockquote>
+<p><em>信号量</em>是一个整型值，且有一个初始计数值。支持<strong>信号通知</strong>与<strong>信号等待</strong>。当一个信号量被信号通知，其计数会被增加。当一个线程在一个信号量上等待时，线程会被阻塞，直至计数器大于零，然后线程会减少这个计数。</p>
+</blockquote>
+<ul>
+<li>计数 == 0：等待</li>
+<li>计数 &gt;= 1：减1不等待</li>
+</ul>
+<p>在GCD中：</p>
+<blockquote>
+<p>dispatch_semaphore_create（int)　　　创建一个semaphore</p>
+</blockquote>
+<ul>
+<li>参数1：初始化的计数值</li>
+</ul>
+<blockquote>
+<p>dispatch_semaphore_signal(dispacth_semaphore_t semaphore)　　　发送一个信号</p>
+</blockquote>
+<ul>
+<li>参数1：需要派发的semaphore</li>
+</ul>
+<blockquote>
+<p>dispatch_semaphore_wait(dispacth_semaphore_t semaphore, dispatch_time_t time)　　　等待信号</p>
+</blockquote>
+<ul>
+<li>参数1：semaphore</li>
+<li>参数2：等待时间。设置成DISPATCH_TIME_FOREVER为永久等待。</li>
+</ul>
+<p>给出使用demo：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//得到全局dispatch queue</span></span><br><span class="line"><span class="built_in">dispatch_queue_t</span> queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, <span class="number">0</span>);</span><br><span class="line"><span class="comment">//生成Dispatch Semaphore 设置计数出事值为“1”。保证只有1个线程可以访问NSMutableArray类对象。</span></span><br><span class="line">dispatch_semaphore_t semaphore = dispatch_semaphore_create(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">NSMutableArray</span> * array = [[<span class="built_in">NSMutableArray</span> alloc]init];</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100000</span>; i++)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">dispatch_async</span>(queue, ^&#123;</span><br><span class="line">		<span class="comment">//等到计数值 &gt;= 1</span></span><br><span class="line">		dispatch_semaphore_wait(seamphore, DISPATCH_TIME_FOREVER);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//当Dispatch Semaphore的计数值 &gt;= 1时，会将其计数值 减1。dispatch_semaphore_wait返回。	</span></span><br><span class="line">		<span class="comment">//此时计数值恒为0。保证了可访问array的线程只有1个，保证了数据的安全性</span></span><br><span class="line">		[array addObject:[<span class="built_in">NSNumber</span> numberWithInt:i]];</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//如果有通过wait函数执行到这里的话，计数值将+1,此时，会由最先等待的线程执行，知道计数值到1之后</span></span><br><span class="line">		dispatch_semaphore_signal(semaphore);</span><br><span class="line">	&#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//释放semaphore</span></span><br><span class="line">dispatch_release(semaphore);</span><br></pre></td></tr></table></figure>
+<h3 id="执行一次">执行一次</h3>
+<p>常用于初始化操作</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="built_in">dispatch_once_t</span> pred</span><br><span class="line"><span class="built_in">dispatch_once</span>(&amp;pred, ^&#123;</span><br><span class="line">	<span class="comment">//初始化操作</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="读取大文件的操作">读取大文件的操作</h3>
+<p>当读取一个很大的文件时，如果一开始能够将文件分割成多个大小合适的文件。然后使用Global Dispatch Queue并行读取，将会加大效率。在GCD中通过Dispatch I/O 和 Dispatch Data</p>
+<blockquote>
+<p>dispatch_io_t dispatch_io_create( dispatch_io_type_t type, dispatch_fd_t fd, dispatch_queue_t queue, void (^cleanup_handler)(int error));</p>
+</blockquote>
+<ul>
+<li>参数1：通道类型,DISPATCH_IO_STREAM	读写操作按顺序依次顺序进行, DISPATCH_IO_RANDOM	随机访问文件</li>
+<li>参数2：文件描述符</li>
+<li>参数3：dispatch queue</li>
+<li>参数4：发生错误时用来执行处理的 Block</li>
+</ul>
+<blockquote>
+<p>void dispatch_io_read( dispatch_io_t channel, off_t offset, size_t length, dispatch_queue_t queue, dispatch_io_handler_t io_handler);//读取操作</p>
+</blockquote>
+<ul>
+<li>参数1：通道</li>
+<li>参数2：要读取的信道的偏移量。若通道类型为DISPATCH_IO_RANDOM时，会忽略该参数。</li>
+<li>参数3：从通道读取的字节数。指定size_max继续读取数据直到达到一个EOF。</li>
+</ul>
+<blockquote>
+<p>void dispatch_io_set_low_water( dispatch_io_t channel, size_t low_water);//函数设置读取的最小值。</p>
+</blockquote>
+<blockquote>
+<p>void dispatch_io_set_high_water( dispatch_io_t channel, size_t high_water);//函数设置读取的最大值。</p>
+</blockquote>
+
+    </div>
+</article>
+
+    <div class="blog-post-comments">
+        <section id="comment">
+            <div id="valine_container" class="valine_thread"></div>
+        </section>
+        <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+        <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+        <script>
+            var GUEST_INFO = ['nick', 'mail', 'link'];
+            var guest_info = 'nick,mail,link'.split(',').filter(function (item) {
+                return GUEST_INFO.indexOf(item) > -1
+            });
+            var notify = 'true' == true;
+            var verify = 'false' == true;
+            var valine = new Valine();
+            valine.init({
+                el: '#valine_container',
+                notify: notify,
+                verify: verify,
+                appId: "yA9rEta0AtnHiiVjV0tHVU95-gzGzoHsz",
+                appKey: "80QovNkdJKrsyXsgRg7UEI0n",
+                placeholder: "Just go go",
+                pageSize: '10',
+                avatar: 'mm',
+                lang: 'zh-cn'
+            })
+        </script>
+    </div>
+
+    
+        <div id="footer-post-container">
+    <div id="footer-post">
+
+        <div id="nav-footer" style="display: none">
+            <ul>
+                
+                    <li><a href="/">首页</a></li>
+                
+                    <li><a href="/archives/">归档</a></li>
+                
+                    <li><a href="/categories/">分类</a></li>
+                
+                    <li><a href="/tags/">标签</a></li>
+                
+                    <li><a href="/about/">关于</a></li>
+                
+                    <li><a href="/search/">搜索</a></li>
+                
+            </ul>
+        </div>
+
+        <div id="toc-footer" style="display: none">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#多线程概述"><span class="toc-number">1.</span> <span class="toc-text">多线程概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GCD-API总结"><span class="toc-number">2.</span> <span class="toc-text">GCD_API总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#创建Dispatch-queue"><span class="toc-number">2.1.</span> <span class="toc-text">创建Dispatch_queue</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Main-Dispatch-Queue"><span class="toc-number">2.2.</span> <span class="toc-text">Main Dispatch Queue</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Global-Dispatch-Queue"><span class="toc-number">2.3.</span> <span class="toc-text">Global Dispatch Queue</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#变更优先级"><span class="toc-number">2.4.</span> <span class="toc-text">变更优先级</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#延迟加入到线程中"><span class="toc-number">2.5.</span> <span class="toc-text">延迟加入到线程中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#多个处理结束的回调"><span class="toc-number">2.6.</span> <span class="toc-text">多个处理结束的回调</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#线程提供阻塞等待"><span class="toc-number">2.7.</span> <span class="toc-text">线程提供阻塞等待</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#线程同步"><span class="toc-number">2.8.</span> <span class="toc-text">线程同步</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#挂起和恢复Dispatch-Queue"><span class="toc-number">2.9.</span> <span class="toc-text">挂起和恢复Dispatch Queue</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#信号量控制并发"><span class="toc-number">2.10.</span> <span class="toc-text">信号量控制并发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#执行一次"><span class="toc-number">2.11.</span> <span class="toc-text">执行一次</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#读取大文件的操作"><span class="toc-number">2.12.</span> <span class="toc-text">读取大文件的操作</span></a></li></ol></li></ol>
+        </div>
+
+        <div id="share-footer" style="display: none">
+            <ul>
+    <li><a class="icon"
+           href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2018/01/01/2018-01-01-IOS%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8EGCD/&title=多线程与GCD"><i
+                    class="fab fa-qq fa-lg" aria-hidden="true"></i></a></li>
+    <li><a class="icon"
+           href="https://service.weibo.com/share/share.php?url=http://yoursite.com/2018/01/01/2018-01-01-IOS%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8EGCD/&title=多线程与GCD"><i
+                    class="fab fa-weibo fa-lg" aria-hidden="true"></i></a></li>
+    <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2018/01/01/2018-01-01-IOS%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8EGCD/&text=多线程与GCD" target="_blank" rel="noopener"><i
+                    class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+    <li><a class="icon" href="mailto:?subject=多线程与GCD&body=Check out this article: http://yoursite.com/2018/01/01/2018-01-01-IOS%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8EGCD/"><i
+                    class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+        </div>
+
+        <div id="actions-footer">
+            <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i
+                        class="fas fa-bars fa-lg"
+                        aria-hidden="true"></i> 菜单</a>
+            <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i
+                        class="fas fa-list fa-lg"
+                        aria-hidden="true"></i> 目录</a>
+            <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i
+                        class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+            <a id="top" style="display:none" class="icon" href="#"
+               onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg"
+                                                                               aria-hidden="true"></i> 返回顶部
+            </a>
+        </div>
+
+    </div>
+</div>
+    
+    <footer id="footer">
+    <div class="footer-left">
+        Copyright &copy; 2025 <i class="fas fa-heart"></i>
+        展荣
+        
+    </div>
+    <!-- <div class="footer-right">
+    <nav>
+      <ul>
+        
+        <li><a href="/">首页</a></li>
+        
+        <li><a href="/archives/">归档</a></li>
+        
+        <li><a href="/categories/">分类</a></li>
+        
+        <li><a href="/tags/">标签</a></li>
+        
+        <li><a href="/about/">关于</a></li>
+        
+        <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </nav>
+  </div> -->
+
+    <div class="footer-custom">
+        Framework by <a href="https://hexo.io" target="_blank">Hexo</a> & Theme by <a
+                href="https://github.com/xuthus5/hexo-theme-cactus" target="_blank">Cactus-CN</a>
+        
+    </div>
+</footer>
+</div>
+<!-- styles -->
+
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css">
+
+
+<link rel="stylesheet" href="https://cdn.staticfile.org/justifiedGallery/3.7.0/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+
+<script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+
+
+<script src="https://cdn.staticfile.org/justifiedGallery/3.7.0/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+    
+<script src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            // copy-btn HTML
+            var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+            btn += '<i class="far fa-clone"></i>';
+            btn += '</span>';
+            // mount it!
+            $(".highlight .code pre").before(btn);
+            var clip = new ClipboardJS('.btn-copy', {
+                target: function (trigger) {
+                    return trigger.nextElementSibling;
+                }
+            });
+            clip.on('success', function (e) {
+                e.trigger.setAttribute('aria-label', "复制成功!");
+                e.clearSelection();
+            })
+        })
+    </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+</body>
+
+</html>

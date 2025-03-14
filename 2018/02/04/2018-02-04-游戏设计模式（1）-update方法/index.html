@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    
+    
+        
+            
+                <link rel="shortcut icon" href="/images/favicon.ico">
+            
+        
+        
+            
+                <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+            
+        
+        
+            
+                <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+            
+        
+    
+    <!-- title -->
+    <title>游戏设计模式（1）-update方法</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+SC&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@2/distr/fira_code.css" rel="stylesheet">
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+
+    <div id="header-post">
+    <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+    <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i
+                class="fas fa-chevron-up fa-lg"></i></a>
+    <span id="menu">
+    <span id="nav">
+      <ul>
+          
+              <li><a href="/">首页</a></li>
+          
+              <li><a href="/archives/">归档</a></li>
+          
+              <li><a href="/categories/">分类</a></li>
+          
+              <li><a href="/tags/">标签</a></li>
+          
+              <li><a href="/about/">关于</a></li>
+          
+              <li><a href="/search/">搜索</a></li>
+          
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+          
+              <li><a class="icon" href="/2018/02/20/2018-02-20-%E6%B8%B8%E6%88%8F%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%882%EF%BC%89-%E5%AF%B9%E8%B1%A1%E6%B1%A0/"><i class="fas fa-chevron-left"
+                                                                           aria-hidden="true"
+                                                                           onmouseover="$('#i-prev').toggle();"
+                                                                           onmouseout="$('#i-prev').toggle();"></i></a></li>
+          
+          
+              <li><a class="icon" href="/2018/01/01/2018-01-01-IOS%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8EGCD/"><i class="fas fa-chevron-right"
+                                                                           aria-hidden="true"
+                                                                           onmouseover="$('#i-next').toggle();"
+                                                                           onmouseout="$('#i-next').toggle();"></i></a></li>
+          
+          <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i
+                          class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();"
+                          onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true"
+                                        onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();"
+                                        onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+    <li><a class="icon"
+           href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2018/02/04/2018-02-04-%E6%B8%B8%E6%88%8F%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%881%EF%BC%89-update%E6%96%B9%E6%B3%95/&title=游戏设计模式（1）-update方法"><i
+                    class="fab fa-qq " aria-hidden="true"></i></a></li>
+    <li><a class="icon"
+           href="https://service.weibo.com/share/share.php?url=http://yoursite.com/2018/02/04/2018-02-04-%E6%B8%B8%E6%88%8F%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%881%EF%BC%89-update%E6%96%B9%E6%B3%95/&title=游戏设计模式（1）-update方法"><i
+                    class="fab fa-weibo " aria-hidden="true"></i></a></li>
+    <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2018/02/04/2018-02-04-%E6%B8%B8%E6%88%8F%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%881%EF%BC%89-update%E6%96%B9%E6%B3%95/&text=游戏设计模式（1）-update方法" target="_blank" rel="noopener"><i
+                    class="fab fa-twitter " aria-hidden="true"></i></a></li>
+    <li><a class="icon" href="mailto:?subject=游戏设计模式（1）-update方法&body=Check out this article: http://yoursite.com/2018/02/04/2018-02-04-%E6%B8%B8%E6%88%8F%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%881%EF%BC%89-update%E6%96%B9%E6%B3%95/"><i
+                    class="fas fa-envelope " aria-hidden="true"></i></a></li>
+</ul>
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#需求举例"><span class="toc-number">1.</span> <span class="toc-text">需求举例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#最笨的方法"><span class="toc-number">2.</span> <span class="toc-text">最笨的方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#改进之后"><span class="toc-number">3.</span> <span class="toc-text">改进之后</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常见问题的解决方案"><span class="toc-number">4.</span> <span class="toc-text">常见问题的解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#该模式的增加和删除对象。"><span class="toc-number">4.1.</span> <span class="toc-text">该模式的增加和删除对象。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#未被利用的对象如何处理"><span class="toc-number">4.2.</span> <span class="toc-text">未被利用的对象如何处理</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+<div class="content index py4">
+    
+    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+        
+    <h1 class="posttitle" itemprop="name headline">
+        游戏设计模式（1）-update方法
+    </h1>
+
+        <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">
+            展荣
+            
+        </span>
+      </span>
+            
+    <div class="postdate">
+        
+            <time datetime="2018-02-03T16:00:00.000Z"
+                  itemprop="datePublished">2018-02-04</time>
+            
+        
+    </div>
+
+            
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">游戏开发</a> › <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a>
+    </div>
+
+            
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="tag">设计模式</a>
+    </div>
+
+        </div>
+    </header>
+    
+    <div class="content" itemprop="articleBody">
+        <p>系统的扩展是开发中十分常见的。因此使用一个合理的设计模式十分必要。这篇文章先看一个常见的update更新方法的思路。在实际的游戏开发时，常常会有一系列的对象需要同步地运转。比如有N个怪物需要同时做一个动作方案，N辆车需要同时从赛道的起点跑到终点。而这些对象直线之间又是相互独立的存在。</p>
+<p>总结上面的情况大概可以归纳为：</p>
+<ul>
+<li>对象的行为与时间相关（最短可以到每一帧）</li>
+<li>各个对象的行为相互独立</li>
+</ul>
+<h2 id="需求举例">需求举例</h2>
+<p>有一辆警车需要在路口A来回进行巡逻。为了游戏体验，还需要每一帧都移动</p>
+<h2 id="最笨的方法">最笨的方法</h2>
+<p>直接从需求上看，我们可以依赖外部的游戏循环进行迭代，可以开启一个帧循环计时器。将该警车vehcile定在某个坐标范围内，然后通过坐标的位置进行反向，以实现来回巡逻的需求。代码上可以简单写成如下形式（简单的假设只在X方向进行移动）。先看代码，然后再说为何这么做是最笨的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">bool runLeft = <span class="keyword">false</span>;</span><br><span class="line"><span class="keyword">while</span>（<span class="keyword">true</span>）<span class="comment">//模拟游戏的帧循环</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span>(runLeft)</span><br><span class="line">	&#123;</span><br><span class="line">		x--;</span><br><span class="line">		<span class="keyword">if</span>(x == <span class="number">0</span>)</span><br><span class="line">			runLeft = <span class="keyword">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		x++;</span><br><span class="line">		<span class="keyword">if</span>(x == <span class="number">100</span>)</span><br><span class="line">			runLeft = <span class="keyword">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	vehcile.x = x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="改进之后">改进之后</h2>
+<p>以上代码看起来是符合了当前的需求，这里警车可以来回进行巡逻了。可是，别忘了策划是随时会改的，当哪天说需要给这个警车附加一个技能，比如遇到需要持续的释放钉刺带之类的。或者需要更多这样类似的警车。这时候将会在以上的代码加入一个计入当前帧数的变量，然后需要加入N个判断（这取决策划给了你多少个释放的时机）。这样一来，上面的代码的<strong>可维护性就变得很低很低</strong>了。我们会不可避免的在这个循环里加入大量的逻辑控制代码。为了解决这个问题，有了这篇文字要说的一个游戏常用的设计模式：这里叫它为<strong>update方法</strong></p>
+<ul>
+<li>游戏维护一个对象的集合</li>
+<li>每个对象实现一个更新方法</li>
+<li>游戏循环每帧对集合内所有对象调用其更新方法。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>（<span class="keyword">true</span>）</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i&lt;vehciles.length; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		((vehcile *)vehciles[i]).run();<span class="comment">// 游戏循环每帧对集合内所有对象调用其更新方法。</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//在run方法里面实现该vehcile的具体逻辑，只要将最笨的那个方法移到对象内部的run方法里头。</span></span><br></pre></td></tr></table></figure>
+<h2 id="常见问题的解决方案">常见问题的解决方案</h2>
+<h3 id="该模式的增加和删除对象。">该模式的增加和删除对象。</h3>
+<p>由于将大量的游戏表现需要在更新方法中完成，通常就会存在删除对象，增加对象等操作。当产生一个新对象的时候，直接添加到游戏循环维护的对象集合末尾中，这里有可能出现<strong>在对象产生的那一帧中进行更新，而此时玩家并没有看到该对象</strong>。当移除某对象的时，正好这个对象位于你当前的更新对象之前。那么也会存在<strong>掠夺下一个对象</strong>,因为当前正在更新下标为1的对象B，然后这时候下表为0的对象A被移除，原来下标为2的对象C，现在变成了1，下标原本为3的D变成了2。当进行下一个对象更新的时候，就直接跳过了对象C。如下图：<br>
+<img src="https://gitee.com/zzRong/MyPics/raw/master/img/%E6%9B%B4%E6%96%B0%E6%96%B9%E6%B3%95%E5%AF%B9%E8%B1%A1%E8%A2%AB%E8%B7%B3%E8%BF%87.png" alt=""><br>
+那么增加和删除对象分别该如何处理呢</p>
+<blockquote>
+<p>添加对象： 一般是在遍历之前存储对象集合的长度.以保证这一帧的循环在任何新增的对象之前停止。</p>
+</blockquote>
+<blockquote>
+<p>删除对象： 将移除方法放在这一帧的的循环结束之后，要被移除的对象标记成“待移除”，在跟新期间跳过该对象。在结束的时候启动一个遍历移除这些移除这些对象的操作</p>
+</blockquote>
+<h3 id="未被利用的对象如何处理">未被利用的对象如何处理</h3>
+<p>在实际的游戏场景中，一定会纯在一些游戏对象暂时不需要被更新。如果存在大量的这种暂时不被更新的对象。每一帧都去调用它的更新方法。将会浪费很多CPU的时间去做这些无用功。</p>
+<p>**解决方案：**单独维护一个需要被更新的对象列表。当一个对象被暂时为“不需要更新”的状态时，将其从该列表中移除。当被重新启用时重新添加。至于添加和删除需要注意的地方在4.1中已经说明啦。</p>
+<p>上面这么做的思路无非就是<strong>空间换时间</strong>,因为需要使用额外的内存去维护这两个列表。还需要一个列表来维护所有的对象。同时这些集合一定需要实时同步。</p>
+<p>因此这需要看具体的非活跃对象的数目，数目越多，就越需要一个单独的集合来做处理。</p>
+<p><em>这个模式还是比较简单的，后续会把自己在开发过程遇到的一些问题总结出来。从实际使用中学习使用合理的设计模式</em></p>
+
+    </div>
+</article>
+
+    <div class="blog-post-comments">
+        <section id="comment">
+            <div id="valine_container" class="valine_thread"></div>
+        </section>
+        <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+        <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+        <script>
+            var GUEST_INFO = ['nick', 'mail', 'link'];
+            var guest_info = 'nick,mail,link'.split(',').filter(function (item) {
+                return GUEST_INFO.indexOf(item) > -1
+            });
+            var notify = 'true' == true;
+            var verify = 'false' == true;
+            var valine = new Valine();
+            valine.init({
+                el: '#valine_container',
+                notify: notify,
+                verify: verify,
+                appId: "yA9rEta0AtnHiiVjV0tHVU95-gzGzoHsz",
+                appKey: "80QovNkdJKrsyXsgRg7UEI0n",
+                placeholder: "Just go go",
+                pageSize: '10',
+                avatar: 'mm',
+                lang: 'zh-cn'
+            })
+        </script>
+    </div>
+
+    
+        <div id="footer-post-container">
+    <div id="footer-post">
+
+        <div id="nav-footer" style="display: none">
+            <ul>
+                
+                    <li><a href="/">首页</a></li>
+                
+                    <li><a href="/archives/">归档</a></li>
+                
+                    <li><a href="/categories/">分类</a></li>
+                
+                    <li><a href="/tags/">标签</a></li>
+                
+                    <li><a href="/about/">关于</a></li>
+                
+                    <li><a href="/search/">搜索</a></li>
+                
+            </ul>
+        </div>
+
+        <div id="toc-footer" style="display: none">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#需求举例"><span class="toc-number">1.</span> <span class="toc-text">需求举例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#最笨的方法"><span class="toc-number">2.</span> <span class="toc-text">最笨的方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#改进之后"><span class="toc-number">3.</span> <span class="toc-text">改进之后</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#常见问题的解决方案"><span class="toc-number">4.</span> <span class="toc-text">常见问题的解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#该模式的增加和删除对象。"><span class="toc-number">4.1.</span> <span class="toc-text">该模式的增加和删除对象。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#未被利用的对象如何处理"><span class="toc-number">4.2.</span> <span class="toc-text">未被利用的对象如何处理</span></a></li></ol></li></ol>
+        </div>
+
+        <div id="share-footer" style="display: none">
+            <ul>
+    <li><a class="icon"
+           href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2018/02/04/2018-02-04-%E6%B8%B8%E6%88%8F%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%881%EF%BC%89-update%E6%96%B9%E6%B3%95/&title=游戏设计模式（1）-update方法"><i
+                    class="fab fa-qq fa-lg" aria-hidden="true"></i></a></li>
+    <li><a class="icon"
+           href="https://service.weibo.com/share/share.php?url=http://yoursite.com/2018/02/04/2018-02-04-%E6%B8%B8%E6%88%8F%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%881%EF%BC%89-update%E6%96%B9%E6%B3%95/&title=游戏设计模式（1）-update方法"><i
+                    class="fab fa-weibo fa-lg" aria-hidden="true"></i></a></li>
+    <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2018/02/04/2018-02-04-%E6%B8%B8%E6%88%8F%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%881%EF%BC%89-update%E6%96%B9%E6%B3%95/&text=游戏设计模式（1）-update方法" target="_blank" rel="noopener"><i
+                    class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+    <li><a class="icon" href="mailto:?subject=游戏设计模式（1）-update方法&body=Check out this article: http://yoursite.com/2018/02/04/2018-02-04-%E6%B8%B8%E6%88%8F%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%881%EF%BC%89-update%E6%96%B9%E6%B3%95/"><i
+                    class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+        </div>
+
+        <div id="actions-footer">
+            <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i
+                        class="fas fa-bars fa-lg"
+                        aria-hidden="true"></i> 菜单</a>
+            <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i
+                        class="fas fa-list fa-lg"
+                        aria-hidden="true"></i> 目录</a>
+            <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i
+                        class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+            <a id="top" style="display:none" class="icon" href="#"
+               onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg"
+                                                                               aria-hidden="true"></i> 返回顶部
+            </a>
+        </div>
+
+    </div>
+</div>
+    
+    <footer id="footer">
+    <div class="footer-left">
+        Copyright &copy; 2025 <i class="fas fa-heart"></i>
+        展荣
+        
+    </div>
+    <!-- <div class="footer-right">
+    <nav>
+      <ul>
+        
+        <li><a href="/">首页</a></li>
+        
+        <li><a href="/archives/">归档</a></li>
+        
+        <li><a href="/categories/">分类</a></li>
+        
+        <li><a href="/tags/">标签</a></li>
+        
+        <li><a href="/about/">关于</a></li>
+        
+        <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </nav>
+  </div> -->
+
+    <div class="footer-custom">
+        Framework by <a href="https://hexo.io" target="_blank">Hexo</a> & Theme by <a
+                href="https://github.com/xuthus5/hexo-theme-cactus" target="_blank">Cactus-CN</a>
+        
+    </div>
+</footer>
+</div>
+<!-- styles -->
+
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css">
+
+
+<link rel="stylesheet" href="https://cdn.staticfile.org/justifiedGallery/3.7.0/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+
+<script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+
+
+<script src="https://cdn.staticfile.org/justifiedGallery/3.7.0/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+    
+<script src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            // copy-btn HTML
+            var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+            btn += '<i class="far fa-clone"></i>';
+            btn += '</span>';
+            // mount it!
+            $(".highlight .code pre").before(btn);
+            var clip = new ClipboardJS('.btn-copy', {
+                target: function (trigger) {
+                    return trigger.nextElementSibling;
+                }
+            });
+            clip.on('success', function (e) {
+                e.trigger.setAttribute('aria-label', "复制成功!");
+                e.clearSelection();
+            })
+        })
+    </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+</body>
+
+</html>

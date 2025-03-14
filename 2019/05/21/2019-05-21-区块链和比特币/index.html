@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    
+    
+        
+            
+                <link rel="shortcut icon" href="/images/favicon.ico">
+            
+        
+        
+            
+                <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+            
+        
+        
+            
+                <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+            
+        
+    
+    <!-- title -->
+    <title>区块链和比特币</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+SC&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@2/distr/fira_code.css" rel="stylesheet">
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+
+    <div id="header-post">
+    <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+    <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i
+                class="fas fa-chevron-up fa-lg"></i></a>
+    <span id="menu">
+    <span id="nav">
+      <ul>
+          
+              <li><a href="/">首页</a></li>
+          
+              <li><a href="/archives/">归档</a></li>
+          
+              <li><a href="/categories/">分类</a></li>
+          
+              <li><a href="/tags/">标签</a></li>
+          
+              <li><a href="/about/">关于</a></li>
+          
+              <li><a href="/search/">搜索</a></li>
+          
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+          
+              <li><a class="icon" href="/2020/05/23/2020-05-23-%E6%B8%B8%E6%88%8F%E9%9B%86%E6%88%90%E8%8B%B9%E6%9E%9CIAP%E5%86%85%E8%B4%AD/"><i class="fas fa-chevron-left"
+                                                                           aria-hidden="true"
+                                                                           onmouseover="$('#i-prev').toggle();"
+                                                                           onmouseout="$('#i-prev').toggle();"></i></a></li>
+          
+          
+              <li><a class="icon" href="/2019/05/13/2019-05-13-%E9%BB%91%E6%B4%9E/"><i class="fas fa-chevron-right"
+                                                                           aria-hidden="true"
+                                                                           onmouseover="$('#i-next').toggle();"
+                                                                           onmouseout="$('#i-next').toggle();"></i></a></li>
+          
+          <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i
+                          class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();"
+                          onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true"
+                                        onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();"
+                                        onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+    <li><a class="icon"
+           href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2019/05/21/2019-05-21-%E5%8C%BA%E5%9D%97%E9%93%BE%E5%92%8C%E6%AF%94%E7%89%B9%E5%B8%81/&title=区块链和比特币"><i
+                    class="fab fa-qq " aria-hidden="true"></i></a></li>
+    <li><a class="icon"
+           href="https://service.weibo.com/share/share.php?url=http://yoursite.com/2019/05/21/2019-05-21-%E5%8C%BA%E5%9D%97%E9%93%BE%E5%92%8C%E6%AF%94%E7%89%B9%E5%B8%81/&title=区块链和比特币"><i
+                    class="fab fa-weibo " aria-hidden="true"></i></a></li>
+    <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2019/05/21/2019-05-21-%E5%8C%BA%E5%9D%97%E9%93%BE%E5%92%8C%E6%AF%94%E7%89%B9%E5%B8%81/&text=区块链和比特币" target="_blank" rel="noopener"><i
+                    class="fab fa-twitter " aria-hidden="true"></i></a></li>
+    <li><a class="icon" href="mailto:?subject=区块链和比特币&body=Check out this article: http://yoursite.com/2019/05/21/2019-05-21-%E5%8C%BA%E5%9D%97%E9%93%BE%E5%92%8C%E6%AF%94%E7%89%B9%E5%B8%81/"><i
+                    class="fas fa-envelope " aria-hidden="true"></i></a></li>
+</ul>
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#去中心化"><span class="toc-number">1.</span> <span class="toc-text">去中心化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#去中心化账本"><span class="toc-number">2.</span> <span class="toc-text">去中心化账本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#比特币到底是啥"><span class="toc-number">3.</span> <span class="toc-text">比特币到底是啥</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+<div class="content index py4">
+    
+    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+        
+    <h1 class="posttitle" itemprop="name headline">
+        区块链和比特币
+    </h1>
+
+        <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">
+            展荣
+            
+        </span>
+      </span>
+            
+    <div class="postdate">
+        
+            <time datetime="2019-05-20T16:00:00.000Z"
+                  itemprop="datePublished">2019-05-21</time>
+            
+        
+    </div>
+
+            
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E6%9D%82%E6%96%87/">杂文</a> › <a class="category-link" href="/categories/%E6%9D%82%E6%96%87/%E5%90%8D%E8%AF%8D%E6%89%AB%E7%9B%B2/">名词扫盲</a>
+    </div>
+
+            
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/%E5%90%8D%E8%AF%8D%E6%A6%82%E5%BF%B5/" rel="tag">名词概念</a>
+    </div>
+
+        </div>
+    </header>
+    
+    <div class="content" itemprop="articleBody">
+        <blockquote>
+<p>本文共计 4308 字，阅读时间大概 7 分钟。</p>
+</blockquote>
+<p>可能很多人都听说区块链，也听说过比特币。</p>
+<p>这些词都非常耳熟，也能张嘴就来。但真对这几词有多少了解呢？</p>
+<p>首先。这是一片很长的文章，如果要一言以蔽之的话，比特币是区块链的一个具体应用。</p>
+<p>但这么说好像是句大白话，听了也白瞎。不妨就慢慢往后开。看完之后应该能了解到</p>
+<blockquote>
+<ol>
+<li>所谓「去中心化」是什么</li>
+<li>一个好玩的的非对称加密</li>
+<li>挖比特币的矿工在做什么</li>
+<li>为什么认为比特币有总量上限</li>
+</ol>
+</blockquote>
+<h2 id="去中心化">去中心化</h2>
+<p>去中心化，那肯定就有一个中心化的概念吧。</p>
+<p>举个例子，我们家里应该都有路由器，有了它，就可以全家人的手机都用上 WiFi 了。由一个中心提供服务的模式，就是中心化。</p>
+<p>但是这种中心化的模式存在问题啊，比如一家子中老爸掌管着路由器的管理员的账号，那老爸想限制掉儿子的网速就限制掉了。参与这个网络中的每个用户权利明显是不一样的嘛。虽然这个例子不太好，但是想想自己小时候被掐掉网线的感觉，是不是也不太好。</p>
+<p>所以，中心化虽然有一个好处是方便管理，但是网易这个管理者滥用权利岂不是就完蛋了。于是，去中心化的概念就有了。</p>
+<p>什么是去中心化呢？</p>
+<p>再打个比方来说，大家都去网上下载过电影，当出现了迅雷等 bt 下载工具之后，原来从某台服务器上下载模式，变成了可以从每一个拥有这个资源的人那里去下载。</p>
+<p>也就是每个人都成了一个可以提供资源的点，每一个人都可以成为中心，这个模式就可以理解成去中心化。</p>
+<p>在用这个思路去看看我们的当前的货币体系，我们花的每一笔钱，最后都是由我们的中央银行控制的。想让我们钱的贬值，只要增发货币就好了。当然，国家有自己的监管机构，当然不会这么干。但是这也是一种中心化的体系。</p>
+<p>而比特币就正好相反。<strong>它一个通过区块链技术实现的去中心化的货币系统</strong>。</p>
+<h2 id="去中心化账本">去中心化账本</h2>
+<p>好，现在知道了什么叫去中心化，也知道了有一个去中心化的应用叫比特币。</p>
+<p>竟然是称之为币，那就一定有记账吧。不然怎么知道每个人有多少币呢？或者怎么知道这个货币如何发型呢？于是这就有了「账本」的概念，而且还是一个**「去中心化账本」**。</p>
+<p>账本，就是记账，把所有账目记录在一个地方，然后存起来。那去中心化账本呢？根据前面去中心化的说法，就是任何人手上都有一个存储了所有账目的账本。</p>
+<p>比如说，「张三支付 1 个比特币给李四」这条记录不仅张三和李四的账本上有，连赵六的账本上也会有。</p>
+<p>但是这样是有问题的，毕竟这个系统不是几个人之间使用的，而是面向全球都开放的。而且无法面对面核对，那</p>
+<p><em>a. 如何保证记录的信息在网络传输中是完整的呢?</em></p>
+<p><em>b. 如果保证记录的在网络传输中是没被篡改过，是可靠的呢？</em></p>
+<p>我们都知道电脑存储信息的方式本质都是二进制，也就是只需要用 0 和 1 两个字符就可以表示出任何东西。比如我们的十进制的 2019 用二进制可以表示成 11111100011。而二进制实在是太长了，又可以把这一串0 、1 组合转换成十六进制。比如刚刚这一串就变成了 7e。</p>
+<p>当然这些怎么来的不影响你往下看，只要知道一个道理，<strong>在计算机内部，信息都会被编码转换成 0 和 1 两个数字的组合。然后可以对其进行各类计算</strong></p>
+<p>有了个这个理论基础，那么我们的所有记账信息，就可以变成数字了。而有了数字，就可以做很多逆天的操作了。</p>
+<p>比如在 1993 年，美国提出了一种加密算法，这种算法可以将任意信息转换成长度不变，只能由原始信息，本文称为「明文」计算出「密文」，但不能由「密文」反向推导出「明文」。这个算法名称叫SHA算法，如今比特币使用的就是SHA第二代。也就是SHA-256。</p>
+<p>我们可以在网上搜一个在线转换的网站试试看。比如我截图的这个</p>
+<p><img src="https://gitee.com/zzRong/MyPics/raw/master/img/sha256.png" alt=""></p>
+<p>那这么一来，只要在传输过程中，把明文和密文都发送过去。<strong>接收到的人只要将「明文」通过同样的 SHA 算法计算出「密文 B」，拿它跟收到的「密文 A」进行比对。如果一样，信息就可以确定是完整的了。</strong></p>
+<p>那解决了信息的完整性之后，还有一个可靠性怎么办？比如说在传输过程中，被黑客劫持了信息。然后直接把原文信息给改了。然后把更改过的信息再经过加密发给你。信息虽然还是完整的了，但是内容都是假的。这可怎么办？</p>
+<p>当然，这也难不倒牛逼哄哄的数学大佬。又出现了一中心的加密手段叫<strong>非对称加密</strong>。</p>
+<p>不如做个小游戏，你在心里想任何一个三位数 N 并记下来。然后你把这个数乘以 11，得到结果 M， 然后再用 M 乘以 91得到最后的结果。</p>
+<blockquote>
+<p>M = 心里想的数 N  * 11</p>
+<p>结果  = M * 91</p>
+<p>取结果后三位 == N ？</p>
+</blockquote>
+<p>然后你看一下最后结果的后三位，是不是就是你刚刚想的那个数一样？</p>
+<p>是不是很神奇？这个过程其实就做了一次非对称加密。非对称加密，就包含了一个<strong>公钥</strong>，可以理解成所有人都可以知道的公共钥匙。同时还包含了一个<strong>私钥</strong>，顾名思义就是私人所有的钥匙。</p>
+<p>而在刚刚那个小游戏里头，我心里想的数是 521，可以理解成原始信息，也就是「明文」，通过私钥 91 算出来的结果是 47411。可以理解成密文</p>
+<blockquote>
+<p>M = 521 * 91 = 47411</p>
+</blockquote>
+<p>如果我把这个密文跟所有人说，只要把这个数乘以公钥 11 ，然后取后三位，就可以得到我想的那个数了。</p>
+<blockquote>
+<p>47411 * 11 = 521521</p>
+</blockquote>
+<p>而在比特币中应用的也是这个原理，只不过算法没那么简单，而是一个叫做 ECC 算法。</p>
+<p>再综合起前面上一部分保持数据完整性的方法来看。就可以总结一下步骤了。</p>
+<ol>
+<li>通过 SHA-256 将 「明文」加密成「密文 A」。</li>
+<li>然后随机生成一个私钥，通过 ECC 算法将「密文 A」用私钥进行加密得到「密文B」。</li>
+<li>通过私钥生成公钥</li>
+<li>将密文B 、 公钥、明文一起发送给其他用户。</li>
+</ol>
+<p>那其他用户<strong>只要用公钥解密得到密文A， 再讲原文通过同样的 SHA-256 算法得到新的密文C，再比对两者是否一致</strong>。</p>
+<p>你看，接受的人只要拥有 明文，密文 和 公钥这三样东西，就可以检查出信息是否完整，同时验证是否信息被修改过。</p>
+<p>**但是前提是私钥不能丢！**就跟你你家要是丢了。再好的防盗门也是不好使的嘛。</p>
+<p>说了这么多了，还只是在说这个「去中心化账本」怎么保证传输安全的。似乎和比特币并没有什么关系啊。</p>
+<p>别急，这些是为了给说比特币打的基础。</p>
+<h2 id="比特币到底是啥">比特币到底是啥</h2>
+<p>前面说了要记录一笔账就需要这么些信息来传输。但解决了传输安全的问题，还要<strong>面临一个如何保证所有人的账本数据同步问题。而也真是因为为了解决这个问题，区块链技术就大放异彩了</strong></p>
+<p>数据同步，在中心化的体系中，可以以一台服务器上为准即可。但是去中心化，到底应该以水为准呢？</p>
+<p>简单来说，第一步就是<strong>无脑的物理隔离</strong>。中本聪的思路是让所有用户都只认可一个唯一的账本。<strong>所有用户要往这个账本写入信息的时候，需要经过一些列非常繁琐的过程</strong>，而这个过程，就是后面要说的比特币产生的重要一步。</p>
+<p>而当用户每完成一次繁琐的过程时，就会把信息接入到这个账本中，而完成的这个人，就拥有了这个数据块。</p>
+<p>那怎么算完成这个过程的呢？不妨来看看这个账本是如何组成的。它由一个一个的信息块组成，每个块都记录着前一个块的加密等信息、固定信息、交易记录和<strong>一个随机数</strong>。</p>
+<p>注意了，这个随机数，就非常非常的好玩了。也就是说这个数是可以不断的随机算出来的。然是规则是什么。前面说了，比特币采用的加密方式是用 SHA-256进行加密，而这个后缀256的含义就是用256个二进制的数表示出原始信息。<strong>而设计者中本聪还规定了，每个信息块的SHA-256之后的密文前 72 位必须是 0。</strong></p>
+<p>这么一来，你们可以算算它的概率是多少了。</p>
+<p>每一位只有 2 个可能，的要么是 0， 要么是 1。也就是概率是  2 的 72 次幂之 1。</p>
+<p>这个数，用计算器按一按，大概是4.72 万亿亿分之一的概率。平均做4.72 万亿亿次 SHA-256 计算后，有可能可以得到一个数。</p>
+<p><img src="https://gitee.com/zzRong/MyPics/raw/master/img/%E6%AF%94%E7%89%B9%E5%B8%81%E8%AE%A1%E7%AE%97%E6%AC%A1%E6%95%B0.png" alt=""></p>
+<p>如果你要说用电脑很快就可以算出来的。那你就真的多了。就用我们普通的家用电脑来算，一秒大概能60-100万次的计算，这个4.72万亿亿的计算量，普通人电脑就怒要想着去算了。再去搜搜四川的深山里那么多的「矿场」的图，更能直接的感受到需要多么庞大的运算能力。</p>
+<p><img src="https://gitee.com/zzRong/MyPics/raw/master/img/%E7%9F%BF%E5%9C%BA.jpeg" alt=""></p>
+<p>但这么难为啥还有人会去计算呢？因为有奖励啊。比特币系统规定了，只要没增加一个区块，就可以得到一部分的比特币奖励。而具体多少，看当时的区块数量而定。</p>
+<p>说到这里，应该就是明白了。<strong>挖矿，就是不断的算SHA-256的值，只要凑到了这个数，就可以创建一个区块，也就有了记账权</strong>。我们在某个市场进行比特币交易，这些信息就是由这些挖矿的替我们记录了。而他们的奖励，就是比特币，还有交易手续费。</p>
+<p>交易手续费，我相信在任何交易中都会存在，但是在比特币这个系统中，还特别有意思。比特币系统的每一个块是有大小限制的，如果某一个记录正好放不下了，而这个旷工又这一刻又只有这一个区块的记账权，这时候，必然就会有一条交易信息被放弃。</p>
+<p>由于新增一个信息块的难度如此之大，那么对于那种恶意不断地刷小额订单的交易信息就非常容易造成信息堵塞，这一点，做过运维的人应该最了解啦。所以手续费在一定程度上也防止了恶意拥堵的情况。要知道，比特币的最小单位可不是 1 个，就跟股市的最小单位也不是 1 股一样。<strong>比特币的最小单位是 10^(-8) 个比特币，一般称为 「一聪」</strong>。</p>
+<p>那还有最后一个问题了，听说过比特币的人也许还听过，比特币的总量是不变的，而且每相隔 4 年会减半一次。</p>
+<p>这个总量其实是认为计算出来的，而 4 年减半则是设计如此。</p>
+<p>中本聪设计为每增加 21 万个区块，比特币的奖励就会减少一般。而第一个区块的初始奖励是 50 比特币，是由它自己创建的。按照全球的计算速度来算。大约是每 10 分钟可以产生一个区块。21 万个大约就需要</p>
+<blockquote>
+<p>210000 * 10 / 60 / 24 / 365 = 3.995 (年)</p>
+</blockquote>
+<p>也就有了每 4 年减半一次的说法。</p>
+<p>而最小单位是一聪，也就是10^(-8) 个比特币。人们通过这个就可以计算出总量大概是 21 万个。但实际上，当挖矿的奖励变成如此至少的时候，还会有人参与挖矿么？这可能是个经济学问题了，比如会牵扯到交易手续费会不会增加呢。这些就不做讨论了。</p>
+<p>好长好长的一篇文章，就这些吧，共同学习，共同进步呗。</p>
+
+    </div>
+</article>
+
+    <div class="blog-post-comments">
+        <section id="comment">
+            <div id="valine_container" class="valine_thread"></div>
+        </section>
+        <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+        <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+        <script>
+            var GUEST_INFO = ['nick', 'mail', 'link'];
+            var guest_info = 'nick,mail,link'.split(',').filter(function (item) {
+                return GUEST_INFO.indexOf(item) > -1
+            });
+            var notify = 'true' == true;
+            var verify = 'false' == true;
+            var valine = new Valine();
+            valine.init({
+                el: '#valine_container',
+                notify: notify,
+                verify: verify,
+                appId: "yA9rEta0AtnHiiVjV0tHVU95-gzGzoHsz",
+                appKey: "80QovNkdJKrsyXsgRg7UEI0n",
+                placeholder: "Just go go",
+                pageSize: '10',
+                avatar: 'mm',
+                lang: 'zh-cn'
+            })
+        </script>
+    </div>
+
+    
+        <div id="footer-post-container">
+    <div id="footer-post">
+
+        <div id="nav-footer" style="display: none">
+            <ul>
+                
+                    <li><a href="/">首页</a></li>
+                
+                    <li><a href="/archives/">归档</a></li>
+                
+                    <li><a href="/categories/">分类</a></li>
+                
+                    <li><a href="/tags/">标签</a></li>
+                
+                    <li><a href="/about/">关于</a></li>
+                
+                    <li><a href="/search/">搜索</a></li>
+                
+            </ul>
+        </div>
+
+        <div id="toc-footer" style="display: none">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#去中心化"><span class="toc-number">1.</span> <span class="toc-text">去中心化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#去中心化账本"><span class="toc-number">2.</span> <span class="toc-text">去中心化账本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#比特币到底是啥"><span class="toc-number">3.</span> <span class="toc-text">比特币到底是啥</span></a></li></ol>
+        </div>
+
+        <div id="share-footer" style="display: none">
+            <ul>
+    <li><a class="icon"
+           href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2019/05/21/2019-05-21-%E5%8C%BA%E5%9D%97%E9%93%BE%E5%92%8C%E6%AF%94%E7%89%B9%E5%B8%81/&title=区块链和比特币"><i
+                    class="fab fa-qq fa-lg" aria-hidden="true"></i></a></li>
+    <li><a class="icon"
+           href="https://service.weibo.com/share/share.php?url=http://yoursite.com/2019/05/21/2019-05-21-%E5%8C%BA%E5%9D%97%E9%93%BE%E5%92%8C%E6%AF%94%E7%89%B9%E5%B8%81/&title=区块链和比特币"><i
+                    class="fab fa-weibo fa-lg" aria-hidden="true"></i></a></li>
+    <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2019/05/21/2019-05-21-%E5%8C%BA%E5%9D%97%E9%93%BE%E5%92%8C%E6%AF%94%E7%89%B9%E5%B8%81/&text=区块链和比特币" target="_blank" rel="noopener"><i
+                    class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+    <li><a class="icon" href="mailto:?subject=区块链和比特币&body=Check out this article: http://yoursite.com/2019/05/21/2019-05-21-%E5%8C%BA%E5%9D%97%E9%93%BE%E5%92%8C%E6%AF%94%E7%89%B9%E5%B8%81/"><i
+                    class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+        </div>
+
+        <div id="actions-footer">
+            <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i
+                        class="fas fa-bars fa-lg"
+                        aria-hidden="true"></i> 菜单</a>
+            <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i
+                        class="fas fa-list fa-lg"
+                        aria-hidden="true"></i> 目录</a>
+            <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i
+                        class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+            <a id="top" style="display:none" class="icon" href="#"
+               onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg"
+                                                                               aria-hidden="true"></i> 返回顶部
+            </a>
+        </div>
+
+    </div>
+</div>
+    
+    <footer id="footer">
+    <div class="footer-left">
+        Copyright &copy; 2025 <i class="fas fa-heart"></i>
+        展荣
+        
+    </div>
+    <!-- <div class="footer-right">
+    <nav>
+      <ul>
+        
+        <li><a href="/">首页</a></li>
+        
+        <li><a href="/archives/">归档</a></li>
+        
+        <li><a href="/categories/">分类</a></li>
+        
+        <li><a href="/tags/">标签</a></li>
+        
+        <li><a href="/about/">关于</a></li>
+        
+        <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </nav>
+  </div> -->
+
+    <div class="footer-custom">
+        Framework by <a href="https://hexo.io" target="_blank">Hexo</a> & Theme by <a
+                href="https://github.com/xuthus5/hexo-theme-cactus" target="_blank">Cactus-CN</a>
+        
+    </div>
+</footer>
+</div>
+<!-- styles -->
+
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css">
+
+
+<link rel="stylesheet" href="https://cdn.staticfile.org/justifiedGallery/3.7.0/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+
+<script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+
+
+<script src="https://cdn.staticfile.org/justifiedGallery/3.7.0/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+    
+<script src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            // copy-btn HTML
+            var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+            btn += '<i class="far fa-clone"></i>';
+            btn += '</span>';
+            // mount it!
+            $(".highlight .code pre").before(btn);
+            var clip = new ClipboardJS('.btn-copy', {
+                target: function (trigger) {
+                    return trigger.nextElementSibling;
+                }
+            });
+            clip.on('success', function (e) {
+                e.trigger.setAttribute('aria-label', "复制成功!");
+                e.clearSelection();
+            })
+        })
+    </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+</body>
+
+</html>

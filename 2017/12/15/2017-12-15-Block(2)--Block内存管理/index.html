@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    
+    
+        
+            
+                <link rel="shortcut icon" href="/images/favicon.ico">
+            
+        
+        
+            
+                <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+            
+        
+        
+            
+                <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+            
+        
+    
+    <!-- title -->
+    <title>Block(2)-Block的内存管理</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+SC&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@2/distr/fira_code.css" rel="stylesheet">
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+
+    <div id="header-post">
+    <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+    <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i
+                class="fas fa-chevron-up fa-lg"></i></a>
+    <span id="menu">
+    <span id="nav">
+      <ul>
+          
+              <li><a href="/">首页</a></li>
+          
+              <li><a href="/archives/">归档</a></li>
+          
+              <li><a href="/categories/">分类</a></li>
+          
+              <li><a href="/tags/">标签</a></li>
+          
+              <li><a href="/about/">关于</a></li>
+          
+              <li><a href="/search/">搜索</a></li>
+          
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+          
+              <li><a class="icon" href="/2018/01/01/2018-01-01-IOS%E5%A4%9A%E7%BA%BF%E7%A8%8B%E4%B8%8EGCD/"><i class="fas fa-chevron-left"
+                                                                           aria-hidden="true"
+                                                                           onmouseover="$('#i-prev').toggle();"
+                                                                           onmouseout="$('#i-prev').toggle();"></i></a></li>
+          
+          
+              <li><a class="icon" href="/2017/12/05/2017-12-05-Block(1)--Block%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/"><i class="fas fa-chevron-right"
+                                                                           aria-hidden="true"
+                                                                           onmouseover="$('#i-next').toggle();"
+                                                                           onmouseout="$('#i-next').toggle();"></i></a></li>
+          
+          <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i
+                          class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();"
+                          onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true"
+                                        onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();"
+                                        onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+    <li><a class="icon"
+           href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2017/12/15/2017-12-15-Block(2)--Block%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/&title=Block(2)-Block的内存管理"><i
+                    class="fab fa-qq " aria-hidden="true"></i></a></li>
+    <li><a class="icon"
+           href="https://service.weibo.com/share/share.php?url=http://yoursite.com/2017/12/15/2017-12-15-Block(2)--Block%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/&title=Block(2)-Block的内存管理"><i
+                    class="fab fa-weibo " aria-hidden="true"></i></a></li>
+    <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2017/12/15/2017-12-15-Block(2)--Block%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/&text=Block(2)-Block的内存管理" target="_blank" rel="noopener"><i
+                    class="fab fa-twitter " aria-hidden="true"></i></a></li>
+    <li><a class="icon" href="mailto:?subject=Block(2)-Block的内存管理&body=Check out this article: http://yoursite.com/2017/12/15/2017-12-15-Block(2)--Block%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/"><i
+                    class="fas fa-envelope " aria-hidden="true"></i></a></li>
+</ul>
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Block的存储位置"><span class="toc-number">1.</span> <span class="toc-text">Block的存储位置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#什么时候发生复制操作"><span class="toc-number">2.</span> <span class="toc-text">什么时候发生复制操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#循环引用的情况"><span class="toc-number">3.</span> <span class="toc-text">循环引用的情况</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#block变量的存储位置"><span class="toc-number">4.</span> <span class="toc-text">__block变量的存储位置</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+<div class="content index py4">
+    
+    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+        
+    <h1 class="posttitle" itemprop="name headline">
+        Block(2)-Block的内存管理
+    </h1>
+
+        <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">
+            展荣
+            
+        </span>
+      </span>
+            
+    <div class="postdate">
+        
+            <time datetime="2017-12-14T16:00:00.000Z"
+                  itemprop="datePublished">2017-12-15</time>
+            
+        
+    </div>
+
+            
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Objective-C/">Objective-C</a>
+    </div>
+
+            
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/iOS/" rel="tag">iOS</a>
+    </div>
+
+        </div>
+    </header>
+    
+    <div class="content" itemprop="articleBody">
+        <blockquote>
+<p>这一篇将上一篇文章<a href="http://www.jianshu.com/p/40e09f04f518" target="_blank" rel="noopener">Block(1)–block的实现原理</a>,略过的问题补充一下，同时这次从另外一个角度<strong>内存</strong>来看Block。这里先引用个很经典的关于block的内存管理的自测题<a href="http://blog.parse.com/learn/engineering/objective-c-blocks-quiz/" target="_blank" rel="noopener">blockc测试题</a>，如果全部都对了，也明白其中原委，那就不必往下看了。</p>
+</blockquote>
+<h2 id="Block的存储位置">Block的存储位置</h2>
+<p>关于Block我们从<a href="http://www.jianshu.com/p/40e09f04f518" target="_blank" rel="noopener">上篇文章</a>可以知道他的实质是一个结构体的实例，那这个结构体在什么位置呢？然后回顾一下之前有一个结构体为：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">block_impl</span></span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">void</span> *isa;</span><br><span class="line">	<span class="keyword">int</span> Flags;</span><br><span class="line">	<span class="keyword">void</span> FuncPtr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里的一个成员的含义上一次直接略过了。而这个isa成员变量，其实就是标记该成员变量在什么内存位置的。<br>
+它可以被赋值为以下3项：</p>
+<ul>
+<li>NSConcreteStackBlock		(栈区）</li>
+<li>NSConcreteGlobalBlock		(全局区，也称数据区）</li>
+<li>NSConcreteMallocBlock		(堆区)</li>
+</ul>
+<p>内存四区示意图：</p>
+<p><img src="https://gitee.com/zzRong/MyPics/raw/master/img/%E5%86%85%E5%AD%98%E5%9B%9B%E5%8C%BA.png" alt=""></p>
+<p>那么如何判断一个Block存储位置在哪？下面给出一个原则</p>
+<blockquote>
+<p>如果一个Block没有引用任何变量，那么这个变量一定在全局区。除此之外都会在栈区生成。而堆区的存在是由于其他原因导致的从栈区复制到了堆区。具体原因先往后看。</p>
+</blockquote>
+<p>我们知道栈区的变量是系统接管内存管理的，当超出作用域，该变量就会被销毁。Block分配在栈上，也是一样的道理，在超出作用域后，该Block会被销毁。为了解决这个问题，提供了一个从栈上复制到堆上的方法。这就有了NSConcreteMallocBlock类型。</p>
+<h2 id="什么时候发生复制操作">什么时候发生复制操作</h2>
+<ul>
+<li>调用Block的copy方法实例方法</li>
+<li>Block作为函数返回值</li>
+<li>将Block赋值给附有__strong修饰符id类型的类或者Block类型成员变量时</li>
+<li>usingBlock的Cocoa框架内的方法</li>
+<li>GDC中的API传递Block时</li>
+</ul>
+<p>除以上情况外都需要<strong>调用copy方法会复制</strong>。后面两个情况其实可以看出当作为函数参数进行传递的时候，不会进行复制，但是如果内部处理了参数，也会发生复制，就例如上面2个情况。</p>
+<h2 id="循环引用的情况">循环引用的情况</h2>
+<p>Block的复制特性使得他很容易造成循环引用。下面举个例子：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">id</span>) init</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">self</span> = [<span class="keyword">super</span> init];</span><br><span class="line">	blk = ^&#123;<span class="built_in">NSLog</span>(<span class="string">"self = %@"</span>, <span class="keyword">self</span>);&#125;;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">self</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里Block使用strong类型的id类型变量self，这样这个实例持有blk,blk也由于复制到了堆上而持有该实例。导致循环引用。解决办法只要使用一个__weak类型保存起self，然后再blk中使用即可。<br>
+举一反三，如果blk使用的不是self，但是是该实例的另一个id类型的成员变量。是由3者产生了循环用于。blk持有了该变量，变量持有self。而self持有blk。<br>
+上面说解决循环引用的都是在ARC环境下使用__weak修饰符。当在MRC下，使用__block说明符可以避免循环引用。因为在<strong>发生复制的时候，不会对__block说明符的变量信息retain</strong>在编码过程中，需要格外注意当时是否为ARC，以正确的使用__block说明符。</p>
+<h2 id="block变量的存储位置">__block变量的存储位置</h2>
+<p>上一篇文章结尾其实已经提到了当存在多个Block使用__block变量时，一个发生Block复制到了堆上，__block一定也会复制到堆上。当剩下的Block复制到堆上时，只增加__block变量的引用计数。这个和oc的内存管理方式是一脉相承的。再回头看看之前留下的问题，为什么需要一个指向自己本身结构体的指针，这样不是多此一举的原因是什么呢。<br>
+看下图：</p>
+<p><img src="https://gitee.com/zzRong/MyPics/raw/master/img/__block%E5%A4%8D%E5%88%B6%E5%88%B0%E5%A0%86.png" alt=""></p>
+<p>可以看出，当发生复制的时候，使用Block语法内的__block变量是存在堆上的__block实例，而在Block语法外使用该变量在复制前存在栈上的__block实例。从上图看出，在发生复制的时候只需要将栈上的__block实例的__forwarding指针指向复制到堆上的结构体。这个问题就解决了。</p>
+
+    </div>
+</article>
+
+    <div class="blog-post-comments">
+        <section id="comment">
+            <div id="valine_container" class="valine_thread"></div>
+        </section>
+        <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+        <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+        <script>
+            var GUEST_INFO = ['nick', 'mail', 'link'];
+            var guest_info = 'nick,mail,link'.split(',').filter(function (item) {
+                return GUEST_INFO.indexOf(item) > -1
+            });
+            var notify = 'true' == true;
+            var verify = 'false' == true;
+            var valine = new Valine();
+            valine.init({
+                el: '#valine_container',
+                notify: notify,
+                verify: verify,
+                appId: "yA9rEta0AtnHiiVjV0tHVU95-gzGzoHsz",
+                appKey: "80QovNkdJKrsyXsgRg7UEI0n",
+                placeholder: "Just go go",
+                pageSize: '10',
+                avatar: 'mm',
+                lang: 'zh-cn'
+            })
+        </script>
+    </div>
+
+    
+        <div id="footer-post-container">
+    <div id="footer-post">
+
+        <div id="nav-footer" style="display: none">
+            <ul>
+                
+                    <li><a href="/">首页</a></li>
+                
+                    <li><a href="/archives/">归档</a></li>
+                
+                    <li><a href="/categories/">分类</a></li>
+                
+                    <li><a href="/tags/">标签</a></li>
+                
+                    <li><a href="/about/">关于</a></li>
+                
+                    <li><a href="/search/">搜索</a></li>
+                
+            </ul>
+        </div>
+
+        <div id="toc-footer" style="display: none">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Block的存储位置"><span class="toc-number">1.</span> <span class="toc-text">Block的存储位置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#什么时候发生复制操作"><span class="toc-number">2.</span> <span class="toc-text">什么时候发生复制操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#循环引用的情况"><span class="toc-number">3.</span> <span class="toc-text">循环引用的情况</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#block变量的存储位置"><span class="toc-number">4.</span> <span class="toc-text">__block变量的存储位置</span></a></li></ol>
+        </div>
+
+        <div id="share-footer" style="display: none">
+            <ul>
+    <li><a class="icon"
+           href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2017/12/15/2017-12-15-Block(2)--Block%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/&title=Block(2)-Block的内存管理"><i
+                    class="fab fa-qq fa-lg" aria-hidden="true"></i></a></li>
+    <li><a class="icon"
+           href="https://service.weibo.com/share/share.php?url=http://yoursite.com/2017/12/15/2017-12-15-Block(2)--Block%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/&title=Block(2)-Block的内存管理"><i
+                    class="fab fa-weibo fa-lg" aria-hidden="true"></i></a></li>
+    <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2017/12/15/2017-12-15-Block(2)--Block%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/&text=Block(2)-Block的内存管理" target="_blank" rel="noopener"><i
+                    class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+    <li><a class="icon" href="mailto:?subject=Block(2)-Block的内存管理&body=Check out this article: http://yoursite.com/2017/12/15/2017-12-15-Block(2)--Block%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/"><i
+                    class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+        </div>
+
+        <div id="actions-footer">
+            <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i
+                        class="fas fa-bars fa-lg"
+                        aria-hidden="true"></i> 菜单</a>
+            <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i
+                        class="fas fa-list fa-lg"
+                        aria-hidden="true"></i> 目录</a>
+            <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i
+                        class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+            <a id="top" style="display:none" class="icon" href="#"
+               onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg"
+                                                                               aria-hidden="true"></i> 返回顶部
+            </a>
+        </div>
+
+    </div>
+</div>
+    
+    <footer id="footer">
+    <div class="footer-left">
+        Copyright &copy; 2025 <i class="fas fa-heart"></i>
+        展荣
+        
+    </div>
+    <!-- <div class="footer-right">
+    <nav>
+      <ul>
+        
+        <li><a href="/">首页</a></li>
+        
+        <li><a href="/archives/">归档</a></li>
+        
+        <li><a href="/categories/">分类</a></li>
+        
+        <li><a href="/tags/">标签</a></li>
+        
+        <li><a href="/about/">关于</a></li>
+        
+        <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </nav>
+  </div> -->
+
+    <div class="footer-custom">
+        Framework by <a href="https://hexo.io" target="_blank">Hexo</a> & Theme by <a
+                href="https://github.com/xuthus5/hexo-theme-cactus" target="_blank">Cactus-CN</a>
+        
+    </div>
+</footer>
+</div>
+<!-- styles -->
+
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css">
+
+
+<link rel="stylesheet" href="https://cdn.staticfile.org/justifiedGallery/3.7.0/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+
+<script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+
+
+<script src="https://cdn.staticfile.org/justifiedGallery/3.7.0/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+    
+<script src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            // copy-btn HTML
+            var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+            btn += '<i class="far fa-clone"></i>';
+            btn += '</span>';
+            // mount it!
+            $(".highlight .code pre").before(btn);
+            var clip = new ClipboardJS('.btn-copy', {
+                target: function (trigger) {
+                    return trigger.nextElementSibling;
+                }
+            });
+            clip.on('success', function (e) {
+                e.trigger.setAttribute('aria-label', "复制成功!");
+                e.clearSelection();
+            })
+        })
+    </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+</body>
+
+</html>

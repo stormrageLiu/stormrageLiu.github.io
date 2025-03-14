@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    
+    
+        
+            
+                <link rel="shortcut icon" href="/images/favicon.ico">
+            
+        
+        
+            
+                <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+            
+        
+        
+            
+                <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+            
+        
+    
+    <!-- title -->
+    <title>iOS 重签名流程</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+SC&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@2/distr/fira_code.css" rel="stylesheet">
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+
+    <div id="header-post">
+    <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+    <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i
+                class="fas fa-chevron-up fa-lg"></i></a>
+    <span id="menu">
+    <span id="nav">
+      <ul>
+          
+              <li><a href="/">首页</a></li>
+          
+              <li><a href="/archives/">归档</a></li>
+          
+              <li><a href="/categories/">分类</a></li>
+          
+              <li><a href="/tags/">标签</a></li>
+          
+              <li><a href="/about/">关于</a></li>
+          
+              <li><a href="/search/">搜索</a></li>
+          
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+          
+              <li><a class="icon" href="/2022/03/02/2022-03-02-Tilemap%E4%B8%8E%E4%B8%96%E7%95%8C%E5%9C%B0%E5%9B%BE/"><i class="fas fa-chevron-left"
+                                                                           aria-hidden="true"
+                                                                           onmouseover="$('#i-prev').toggle();"
+                                                                           onmouseout="$('#i-prev').toggle();"></i></a></li>
+          
+          
+              <li><a class="icon" href="/2021/01/11/2021-01-11-%E5%8F%8D%E7%BC%96%E8%AF%91%E6%97%85%E8%A1%8C%E9%9D%92%E8%9B%99%20For%20Android%20Unity/"><i class="fas fa-chevron-right"
+                                                                           aria-hidden="true"
+                                                                           onmouseover="$('#i-next').toggle();"
+                                                                           onmouseout="$('#i-next').toggle();"></i></a></li>
+          
+          <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i
+                          class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();"
+                          onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true"
+                                        onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();"
+                                        onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+    <li><a class="icon"
+           href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2021/01/15/2021-01-15-iOS%20%E9%87%8D%E7%AD%BE%E5%90%8D%E6%B5%81%E7%A8%8B/&title=iOS 重签名流程"><i
+                    class="fab fa-qq " aria-hidden="true"></i></a></li>
+    <li><a class="icon"
+           href="https://service.weibo.com/share/share.php?url=http://yoursite.com/2021/01/15/2021-01-15-iOS%20%E9%87%8D%E7%AD%BE%E5%90%8D%E6%B5%81%E7%A8%8B/&title=iOS 重签名流程"><i
+                    class="fab fa-weibo " aria-hidden="true"></i></a></li>
+    <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2021/01/15/2021-01-15-iOS%20%E9%87%8D%E7%AD%BE%E5%90%8D%E6%B5%81%E7%A8%8B/&text=iOS 重签名流程" target="_blank" rel="noopener"><i
+                    class="fab fa-twitter " aria-hidden="true"></i></a></li>
+    <li><a class="icon" href="mailto:?subject=iOS 重签名流程&body=Check out this article: http://yoursite.com/2021/01/15/2021-01-15-iOS%20%E9%87%8D%E7%AD%BE%E5%90%8D%E6%B5%81%E7%A8%8B/"><i
+                    class="fas fa-envelope " aria-hidden="true"></i></a></li>
+</ul>
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS-的签名机制"><span class="toc-number">1.</span> <span class="toc-text">iOS 的签名机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#简单机制"><span class="toc-number">1.1.</span> <span class="toc-text">简单机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#双层签名"><span class="toc-number">1.2.</span> <span class="toc-text">双层签名</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#手动重签名"><span class="toc-number">2.</span> <span class="toc-text">手动重签名</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#解压-App"><span class="toc-number">2.1.</span> <span class="toc-text">解压 App</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查看-APP-的签名信息"><span class="toc-number">2.2.</span> <span class="toc-text">查看 APP 的签名信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除插件文件夹"><span class="toc-number">2.3.</span> <span class="toc-text">删除插件文件夹</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#签名-Framework"><span class="toc-number">2.4.</span> <span class="toc-text">签名 Framework</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#给-MachO-文件添加可执行权限"><span class="toc-number">2.5.</span> <span class="toc-text">给 MachO 文件添加可执行权限</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#替换描述文件"><span class="toc-number">2.6.</span> <span class="toc-text">替换描述文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#替换-bundleId"><span class="toc-number">2.7.</span> <span class="toc-text">替换 bundleId</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建-Property-List-文件"><span class="toc-number">2.8.</span> <span class="toc-text">创建 Property List 文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#签名-App-真机安装"><span class="toc-number">2.9.</span> <span class="toc-text">签名 App &amp; 真机安装</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#脚本自动化重签名"><span class="toc-number">3.</span> <span class="toc-text">脚本自动化重签名</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#目录准备"><span class="toc-number">3.1.</span> <span class="toc-text">目录准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#脚本"><span class="toc-number">3.2.</span> <span class="toc-text">脚本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#工程设置"><span class="toc-number">3.3.</span> <span class="toc-text">工程设置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#end"><span class="toc-number">4.</span> <span class="toc-text">end</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+<div class="content index py4">
+    
+    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+        
+    <h1 class="posttitle" itemprop="name headline">
+        iOS 重签名流程
+    </h1>
+
+        <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">
+            展荣
+            
+        </span>
+      </span>
+            
+    <div class="postdate">
+        
+            <time datetime="2021-01-15T03:20:42.000Z"
+                  itemprop="datePublished">2021-01-15</time>
+            
+        
+    </div>
+
+            
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">游戏开发</a> › <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/%E5%8F%8D%E7%BC%96%E8%AF%91/">反编译</a> › <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/%E5%8F%8D%E7%BC%96%E8%AF%91/iOS/">iOS</a>
+    </div>
+
+            
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/iOS/" rel="tag">iOS</a>
+    </div>
+
+        </div>
+    </header>
+    
+    <div class="content" itemprop="articleBody">
+        <h2 id="iOS-的签名机制">iOS 的签名机制</h2>
+<h3 id="简单机制">简单机制</h3>
+<p>这里会用到非对称加密，就是比如很经典的 RSA 加密算法，但篇幅有限，这里主要说一下苹果现在对 App 的加密流程是什么样的，之后再写介绍 RSA 的是如何实现非对称加密的。</p>
+<p>非对称加密，最简单的可以做成：所有的 iOS 系统都内置一个公钥，App Store 的后台上存放一个私钥。App Store 后会通过秘钥对所有上传的 App 进行签名，当在 iPhone 上安装时，再用系统内置的公钥验证这个签名。</p>
+<p><strong>但是</strong>，这样并不能符合苹果和广大开发者的需求！</p>
+<p>比如，开发者需要真机调试时，是不可能都通过上传应用商店来做的。而苹果也不能放开 iOS 的生态控制，让无签名的应用随意安装。所以，双层签名的模式出现了。</p>
+<h3 id="双层签名">双层签名</h3>
+<p>为了解决的这个问题， 苹果公司将 Mac 这个角色加入进来了，同时还增加了一个描述文件的东西。</p>
+<p>先看有 Mac 时的签名验证，苹果保留原先苹果后台服务器上存一份私钥 A， 所有 iOS系统内置一个公钥 A 的模式。同时，Mac 上通过“钥匙串”生成 CSR 文件（就是在申请开发者证书时候需要提供过的那个文件）时，会生成一对公钥 B 和 私钥 B。<br>
+<img src="https://gitee.com/zzRong/MyPics/raw/master/img/IMG_0113.jpg" alt=""></p>
+<ol>
+<li>在开发者后台请求证书时， 会通过服务器的<code>私钥 A，对公钥 B 进行加密</code>。得到一个对应的证书。当安装到 Mac 上时，“钥匙串”会将 私钥 B 关联上这个证书。</li>
+<li>当通过 Xcode 出包的时，通过 <code>私钥 B 对 App 进行签名</code>，同时将上一步得到的<code>证书放入 App 包里</code>。</li>
+<li>当将 App 安装到 iPhone 时，通过 iOS 系统内置的私钥 A，<code>解密得到公钥 M</code>。</li>
+<li>拿到公钥 M， 再去解密验证第二步中<code>通过 私钥 B 对 App 的签名</code>。</li>
+</ol>
+<p>然后是描述文件。苹果为了防止应用被随意安装和权限乱用，又引入的描述文件。</p>
+<ul>
+<li>只有在描述文件里配置过的设备才可以安装。</li>
+<li>只有在描述文件内配置过的权限，才可以在工程中进行设置使用。</li>
+</ul>
+<h2 id="手动重签名">手动重签名</h2>
+<h3 id="解压-App">解压 App</h3>
+<p>直接使用类似的<code>The Unarchiver</code>这样工具直接解压即可。或者直接改成 .zip进行解压。解压后会得到一个<code>Payload </code>文件夹。</p>
+<h3 id="查看-APP-的签名信息">查看 APP 的签名信息</h3>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">codesign -vv -d demo/Payload/shediao-lz-tw.app</span><br></pre></td></tr></table></figure>
+<p><img src="https://gitee.com/zzRong/MyPics/raw/master/img/1_%E6%9F%A5%E7%9C%8B%E5%BA%94%E7%94%A8%E7%AD%BE%E5%90%8D%E4%BF%A1%E6%81%AF.png" alt=""></p>
+<h3 id="删除插件文件夹">删除插件文件夹</h3>
+<p>我这个包是不带插件的，但有时候会遇到带插件的包，普通的证书文件是不能对插件进行签名。所以这里先右键显示包内容，把里头的<code>Watch</code>和<code>PlugIns</code>那文件夹删掉。</p>
+<h3 id="签名-Framework">签名 Framework</h3>
+<p>首先得对所有的动态库 Framework 进行签名。在 <code>Framework</code>文件夹下，有所有需要签名的文件。签名的证书也可以使用命令行直接列出来。后面的名字，就是签名的时的参数。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//列出电脑上所有的证书</span></span><br><span class="line">security <span class="built_in">find</span>-identity -v -p codesigning</span><br><span class="line"><span class="comment">//签名FrameWork</span></span><br><span class="line">codesign -fs <span class="string">"（证书名称）"</span> xxxxx.FrameWork名称</span><br></pre></td></tr></table></figure>
+<p><img src="https://gitee.com/zzRong/MyPics/raw/master/img/3_%E7%AD%BE%E5%90%8D%E5%8A%A8%E6%80%81%E5%BA%93.png" alt=""></p>
+<h3 id="给-MachO-文件添加可执行权限">给 MachO 文件添加可执行权限</h3>
+<p>这个 MachO 文件就是 Mac 平台和 iOS 平台上的可执行文件的简称，在包里头有一个和 xxx.app 名字相同的文件。需要给他提供一个可执行权限。<code>chmod</code>一下就行。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//例如我这的例子是shediao-lz-tw</span></span><br><span class="line">chmod +x shediao-lz-tw</span><br></pre></td></tr></table></figure>
+<h3 id="替换描述文件">替换描述文件</h3>
+<p>通过前面的证书原理可以知道，签名还需要一个正确的描述文件。那么我们可以通过创建一个新的工程，用签名的证书在真机上运行一下就能得到一个描述文件，将这个描述文件放到需要重签名的包内容中即可。<br>
+<img src="https://gitee.com/zzRong/MyPics/raw/master/img/4_%E8%8E%B7%E5%8F%96%E6%8F%8F%E8%BF%B0%E6%96%87%E4%BB%B6.png" alt=""></p>
+<h3 id="替换-bundleId">替换 bundleId</h3>
+<p>在包内容里，有一个 info.plist 的文件，需要修改里头的 BundleId 和上面生产描述文件的 BundleId 一样。</p>
+<h3 id="创建-Property-List-文件">创建 Property List 文件</h3>
+<p>在签名的时候还需要一个 plist 文件。<br>
+我么你可以通过 Xcode 新建一个<code>PropertyList</code>文件，里头的信息则是上一步生产的描述文件里头的部分内容。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//通过命令能查看描述文件的信息</span></span><br><span class="line">security cms -Di embedded.mobileprovision</span><br></pre></td></tr></table></figure>
+<p><img src="https://gitee.com/zzRong/MyPics/raw/master/img/05_%E5%8E%9F%E5%A7%8B%E6%8F%8F%E8%BF%B0%E6%96%87%E4%BB%B6%E4%BF%A1%E6%81%AF.png" alt=""></p>
+<p>复制红框的中内容，黏贴到新的<code>PropertyList</code>文件里，然后保存一份到和 xxxx.app 文件同级的目录下。</p>
+<p><img src="https://gitee.com/zzRong/MyPics/raw/master/img/7_%E6%9B%BF%E6%8D%A2%E4%BF%9D%E5%AD%98plist.png" alt=""></p>
+<h3 id="签名-App-真机安装">签名 App &amp; 真机安装</h3>
+<p>最后一步，执行命令 <code>codesign 命令</code>签名就大功告成了。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">  ~/Documents/<span class="number">12</span>_ipa_crack/demoApp/demo/Payload&gt; codesign -fs <span class="string">"z证书名称"</span> --no-strict --entitlements=demoApp.plist shediao-lz-tw.app   </span><br><span class="line"></span><br><span class="line"><span class="comment">//执行完成后，能显示下面这句提示，就可以直接用真机检测是否能成功安装了</span></span><br><span class="line"> shediao-lz-tw.app: replacing existing signature</span><br></pre></td></tr></table></figure>
+<p>这里可以直接通过 Xcode 的设备窗口，<code>菜单栏 - Window - Device and Simtlators</code>（shift+command+2）</p>
+<ul>
+<li>[+]</li>
+<li>选择签名好的 App 包</li>
+<li>选择 replace<br>
+<img src="https://gitee.com/zzRong/MyPics/raw/master/img/8_%E6%9B%BF%E6%8D%A2%E5%AE%89%E8%A3%85.png" alt=""></li>
+</ul>
+<p>需要调试的时候，在手机上启动应用，<code>菜单栏 - Debug - Attach to Process-选择对应的应用</code>。例如就可以调试不同按钮对应的函数。有了这些，hook 一些按钮就能更轻松的找到对应的类和函数了。<br>
+<img src="https://gitee.com/zzRong/MyPics/raw/master/img/9_%E8%B0%83%E8%AF%95%E7%95%8C%E9%9D%A2.png" alt=""></p>
+<h2 id="脚本自动化重签名">脚本自动化重签名</h2>
+<p>上面的是签名方式，全都是在敲命令行，作为程序员最优秀的品质 — ”懒“，让这套流程可以变成自动化的脚本就好。 就类似平时开发一个 App ，直接在 Xcode 上点 Run 就可以在真机上调试。这样的话，之后要用 动态库逆向也更加方便调试。</p>
+<h3 id="目录准备">目录准备</h3>
+<ol>
+<li>需要新建一个 App工程</li>
+<li>在工程的同级目录下创建一个 <code>APP</code>文件夹。取别的名字也行，和脚本里保持一致即可。<br>
+如下图三个红框圈出来的结构。另外两个文件夹，有一个是自动生成的临时文件，FXHook 是后期做动态注入的文件夹，暂时忽略。<br>
+<img src="https://gitee.com/zzRong/MyPics/raw/master/img/10_%E8%84%9A%E6%9C%AC%E5%B7%A5%E7%A8%8B.png" alt=""></li>
+</ol>
+<h3 id="脚本">脚本</h3>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"># $&#123;SRCROOT&#125; 它是工程文件所在的目录</span><br><span class="line">TEMP_PATH=<span class="string">"$&#123;SRCROOT&#125;/Temp"</span></span><br><span class="line">#资源文件夹，我们提前在工程目录下新建一个APP文件夹，里面放ipa包</span><br><span class="line">ASSETS_PATH=<span class="string">"$&#123;SRCROOT&#125;/APP"</span></span><br><span class="line">#目标ipa包路径</span><br><span class="line">TARGET_IPA_PATH=<span class="string">"$&#123;ASSETS_PATH&#125;/*.ipa"</span></span><br><span class="line">#清空Temp文件夹</span><br><span class="line">rm -rf <span class="string">"$&#123;SRCROOT&#125;/Temp"</span></span><br><span class="line"><span class="built_in">mkdir</span> -p <span class="string">"$&#123;SRCROOT&#125;/Temp"</span></span><br><span class="line"></span><br><span class="line">#----------------------------------------</span><br><span class="line"># <span class="number">1.</span> 解压IPA到Temp下</span><br><span class="line">unzip -oqq <span class="string">"$TARGET_IPA_PATH"</span> -d <span class="string">"$TEMP_PATH"</span></span><br><span class="line"># 拿到解压的临时的APP的路径</span><br><span class="line">TEMP_APP_PATH=$(<span class="built_in">set</span> -- <span class="string">"$TEMP_PATH/Payload/"</span>*.app;echo <span class="string">"$1"</span>)</span><br><span class="line"># echo <span class="string">"路径是:$TEMP_APP_PATH"</span></span><br><span class="line"></span><br><span class="line">#----------------------------------------</span><br><span class="line"># <span class="number">2.</span> 将解压出来的.app拷贝进入工程下</span><br><span class="line"># BUILT_PRODUCTS_DIR 工程生成的APP包的路径</span><br><span class="line"># TARGET_NAME target名称</span><br><span class="line">TARGET_APP_PATH=<span class="string">"$BUILT_PRODUCTS_DIR/$TARGET_NAME.app"</span></span><br><span class="line">echo <span class="string">"app路径:$TARGET_APP_PATH"</span></span><br><span class="line"></span><br><span class="line">rm -rf <span class="string">"$TARGET_APP_PATH"</span></span><br><span class="line"><span class="built_in">mkdir</span> -p <span class="string">"$TARGET_APP_PATH"</span></span><br><span class="line">cp -rf <span class="string">"$TEMP_APP_PATH/"</span> <span class="string">"$TARGET_APP_PATH"</span></span><br><span class="line"></span><br><span class="line">#----------------------------------------</span><br><span class="line"># <span class="number">3.</span> 删除extension和WatchAPP.个人证书没法签名Extention</span><br><span class="line">rm -rf <span class="string">"$TARGET_APP_PATH/PlugIns"</span></span><br><span class="line">rm -rf <span class="string">"$TARGET_APP_PATH/Watch"</span></span><br><span class="line"></span><br><span class="line">#----------------------------------------</span><br><span class="line"># <span class="number">4.</span> 更新info.plist文件 CFBundleIdentifier</span><br><span class="line">#  设置:<span class="string">"Set : KEY Value"</span> <span class="string">"目标文件路径"</span></span><br><span class="line">/usr/libexec/PlistBuddy -c <span class="string">"Set :CFBundleIdentifier $PRODUCT_BUNDLE_IDENTIFIER"</span> <span class="string">"$TARGET_APP_PATH/Info.plist"</span></span><br><span class="line"></span><br><span class="line">#----------------------------------------</span><br><span class="line"># <span class="number">5.</span> 给MachO文件上执行权限</span><br><span class="line"># 拿到MachO文件的路径WeChat</span><br><span class="line">APP_BINARY=`plutil -convert xml1 -o - $TARGET_APP_PATH/Info.plist|grep -A1 Exec|tail -n1|cut -f2 -d\&gt;|cut -f1 -d\&lt;`</span><br><span class="line">#上可执行权限</span><br><span class="line">chmod +x <span class="string">"$TARGET_APP_PATH/$APP_BINARY"</span></span><br><span class="line"></span><br><span class="line">#----------------------------------------</span><br><span class="line"># <span class="number">6.</span> 重签名第三方 FrameWorks</span><br><span class="line">TARGET_APP_FRAMEWORKS_PATH=<span class="string">"$TARGET_APP_PATH/Frameworks"</span></span><br><span class="line"><span class="keyword">if</span> [ -d <span class="string">"$TARGET_APP_FRAMEWORKS_PATH"</span> ];</span><br><span class="line">then</span><br><span class="line"><span class="keyword">for</span> FRAMEWORK in <span class="string">"$TARGET_APP_FRAMEWORKS_PATH/"</span>*</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line"></span><br><span class="line">#签名</span><br><span class="line">/usr/bin/codesign --force --sign <span class="string">"$EXPANDED_CODE_SIGN_IDENTITY"</span> <span class="string">"$FRAMEWORK"</span></span><br><span class="line">done</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">#注入,这一行是注入用的，先注释，FXHook就是我自己创建的动态库名称</span><br><span class="line"><span class="meta">#yololib <span class="meta-string">"$TARGET_APP_PATH/$APP_BINARY"</span> <span class="meta-string">"Frameworks/FXHook.framework/FXHook"</span></span></span><br></pre></td></tr></table></figure>
+<h3 id="工程设置">工程设置</h3>
+<p><img src="https://gitee.com/zzRong/MyPics/raw/master/img/11_%E8%84%9A%E6%9C%AC%E5%8A%A8%E6%80%81%E8%AE%BE%E7%BD%AE.jpg" alt=""></p>
+<h2 id="end">end</h2>
+<p>这么设置好之后，直接和平时开发一样，连接手机，直接运行调试就好了。也就有了做动态库注入的基本环境。</p>
+<p>填了 1/2 的坑，下一篇再聊聊剩下的动态注入的事。</p>
+
+    </div>
+</article>
+
+    <div class="blog-post-comments">
+        <section id="comment">
+            <div id="valine_container" class="valine_thread"></div>
+        </section>
+        <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+        <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+        <script>
+            var GUEST_INFO = ['nick', 'mail', 'link'];
+            var guest_info = 'nick,mail,link'.split(',').filter(function (item) {
+                return GUEST_INFO.indexOf(item) > -1
+            });
+            var notify = 'true' == true;
+            var verify = 'false' == true;
+            var valine = new Valine();
+            valine.init({
+                el: '#valine_container',
+                notify: notify,
+                verify: verify,
+                appId: "yA9rEta0AtnHiiVjV0tHVU95-gzGzoHsz",
+                appKey: "80QovNkdJKrsyXsgRg7UEI0n",
+                placeholder: "Just go go",
+                pageSize: '10',
+                avatar: 'mm',
+                lang: 'zh-cn'
+            })
+        </script>
+    </div>
+
+    
+        <div id="footer-post-container">
+    <div id="footer-post">
+
+        <div id="nav-footer" style="display: none">
+            <ul>
+                
+                    <li><a href="/">首页</a></li>
+                
+                    <li><a href="/archives/">归档</a></li>
+                
+                    <li><a href="/categories/">分类</a></li>
+                
+                    <li><a href="/tags/">标签</a></li>
+                
+                    <li><a href="/about/">关于</a></li>
+                
+                    <li><a href="/search/">搜索</a></li>
+                
+            </ul>
+        </div>
+
+        <div id="toc-footer" style="display: none">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS-的签名机制"><span class="toc-number">1.</span> <span class="toc-text">iOS 的签名机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#简单机制"><span class="toc-number">1.1.</span> <span class="toc-text">简单机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#双层签名"><span class="toc-number">1.2.</span> <span class="toc-text">双层签名</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#手动重签名"><span class="toc-number">2.</span> <span class="toc-text">手动重签名</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#解压-App"><span class="toc-number">2.1.</span> <span class="toc-text">解压 App</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查看-APP-的签名信息"><span class="toc-number">2.2.</span> <span class="toc-text">查看 APP 的签名信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除插件文件夹"><span class="toc-number">2.3.</span> <span class="toc-text">删除插件文件夹</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#签名-Framework"><span class="toc-number">2.4.</span> <span class="toc-text">签名 Framework</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#给-MachO-文件添加可执行权限"><span class="toc-number">2.5.</span> <span class="toc-text">给 MachO 文件添加可执行权限</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#替换描述文件"><span class="toc-number">2.6.</span> <span class="toc-text">替换描述文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#替换-bundleId"><span class="toc-number">2.7.</span> <span class="toc-text">替换 bundleId</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建-Property-List-文件"><span class="toc-number">2.8.</span> <span class="toc-text">创建 Property List 文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#签名-App-真机安装"><span class="toc-number">2.9.</span> <span class="toc-text">签名 App &amp; 真机安装</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#脚本自动化重签名"><span class="toc-number">3.</span> <span class="toc-text">脚本自动化重签名</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#目录准备"><span class="toc-number">3.1.</span> <span class="toc-text">目录准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#脚本"><span class="toc-number">3.2.</span> <span class="toc-text">脚本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#工程设置"><span class="toc-number">3.3.</span> <span class="toc-text">工程设置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#end"><span class="toc-number">4.</span> <span class="toc-text">end</span></a></li></ol>
+        </div>
+
+        <div id="share-footer" style="display: none">
+            <ul>
+    <li><a class="icon"
+           href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2021/01/15/2021-01-15-iOS%20%E9%87%8D%E7%AD%BE%E5%90%8D%E6%B5%81%E7%A8%8B/&title=iOS 重签名流程"><i
+                    class="fab fa-qq fa-lg" aria-hidden="true"></i></a></li>
+    <li><a class="icon"
+           href="https://service.weibo.com/share/share.php?url=http://yoursite.com/2021/01/15/2021-01-15-iOS%20%E9%87%8D%E7%AD%BE%E5%90%8D%E6%B5%81%E7%A8%8B/&title=iOS 重签名流程"><i
+                    class="fab fa-weibo fa-lg" aria-hidden="true"></i></a></li>
+    <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2021/01/15/2021-01-15-iOS%20%E9%87%8D%E7%AD%BE%E5%90%8D%E6%B5%81%E7%A8%8B/&text=iOS 重签名流程" target="_blank" rel="noopener"><i
+                    class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+    <li><a class="icon" href="mailto:?subject=iOS 重签名流程&body=Check out this article: http://yoursite.com/2021/01/15/2021-01-15-iOS%20%E9%87%8D%E7%AD%BE%E5%90%8D%E6%B5%81%E7%A8%8B/"><i
+                    class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+        </div>
+
+        <div id="actions-footer">
+            <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i
+                        class="fas fa-bars fa-lg"
+                        aria-hidden="true"></i> 菜单</a>
+            <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i
+                        class="fas fa-list fa-lg"
+                        aria-hidden="true"></i> 目录</a>
+            <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i
+                        class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+            <a id="top" style="display:none" class="icon" href="#"
+               onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg"
+                                                                               aria-hidden="true"></i> 返回顶部
+            </a>
+        </div>
+
+    </div>
+</div>
+    
+    <footer id="footer">
+    <div class="footer-left">
+        Copyright &copy; 2025 <i class="fas fa-heart"></i>
+        展荣
+        
+    </div>
+    <!-- <div class="footer-right">
+    <nav>
+      <ul>
+        
+        <li><a href="/">首页</a></li>
+        
+        <li><a href="/archives/">归档</a></li>
+        
+        <li><a href="/categories/">分类</a></li>
+        
+        <li><a href="/tags/">标签</a></li>
+        
+        <li><a href="/about/">关于</a></li>
+        
+        <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </nav>
+  </div> -->
+
+    <div class="footer-custom">
+        Framework by <a href="https://hexo.io" target="_blank">Hexo</a> & Theme by <a
+                href="https://github.com/xuthus5/hexo-theme-cactus" target="_blank">Cactus-CN</a>
+        
+    </div>
+</footer>
+</div>
+<!-- styles -->
+
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css">
+
+
+<link rel="stylesheet" href="https://cdn.staticfile.org/justifiedGallery/3.7.0/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+
+<script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+
+
+<script src="https://cdn.staticfile.org/justifiedGallery/3.7.0/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+    
+<script src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            // copy-btn HTML
+            var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+            btn += '<i class="far fa-clone"></i>';
+            btn += '</span>';
+            // mount it!
+            $(".highlight .code pre").before(btn);
+            var clip = new ClipboardJS('.btn-copy', {
+                target: function (trigger) {
+                    return trigger.nextElementSibling;
+                }
+            });
+            clip.on('success', function (e) {
+                e.trigger.setAttribute('aria-label', "复制成功!");
+                e.clearSelection();
+            })
+        })
+    </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+</body>
+
+</html>

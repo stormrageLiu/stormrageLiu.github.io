@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    
+    
+        
+            
+                <link rel="shortcut icon" href="/images/favicon.ico">
+            
+        
+        
+            
+                <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+            
+        
+        
+            
+                <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+            
+        
+    
+    <!-- title -->
+    <title>Objective-C的内存管理</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+SC&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@2/distr/fira_code.css" rel="stylesheet">
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+
+    <div id="header-post">
+    <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+    <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i
+                class="fas fa-chevron-up fa-lg"></i></a>
+    <span id="menu">
+    <span id="nav">
+      <ul>
+          
+              <li><a href="/">首页</a></li>
+          
+              <li><a href="/archives/">归档</a></li>
+          
+              <li><a href="/categories/">分类</a></li>
+          
+              <li><a href="/tags/">标签</a></li>
+          
+              <li><a href="/about/">关于</a></li>
+          
+              <li><a href="/search/">搜索</a></li>
+          
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+          
+              <li><a class="icon" href="/2017/12/05/2017-12-05-Block(1)--Block%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/"><i class="fas fa-chevron-left"
+                                                                           aria-hidden="true"
+                                                                           onmouseover="$('#i-prev').toggle();"
+                                                                           onmouseout="$('#i-prev').toggle();"></i></a></li>
+          
+          
+              <li><a class="icon" href="/2017/10/16/2017-10-17-%E8%A7%A3%E5%86%B3%E8%AE%BF%E9%97%AEGitHub%E8%AE%BF%E9%97%AE%E6%85%A2%E9%97%AE%E9%A2%98/"><i class="fas fa-chevron-right"
+                                                                           aria-hidden="true"
+                                                                           onmouseover="$('#i-next').toggle();"
+                                                                           onmouseout="$('#i-next').toggle();"></i></a></li>
+          
+          <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i
+                          class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();"
+                          onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true"
+                                        onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();"
+                                        onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+    <li><a class="icon"
+           href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2017/11/18/2017-11-18-Objective-C%E7%9A%84%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/&title=Objective-C的内存管理"><i
+                    class="fab fa-qq " aria-hidden="true"></i></a></li>
+    <li><a class="icon"
+           href="https://service.weibo.com/share/share.php?url=http://yoursite.com/2017/11/18/2017-11-18-Objective-C%E7%9A%84%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/&title=Objective-C的内存管理"><i
+                    class="fab fa-weibo " aria-hidden="true"></i></a></li>
+    <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2017/11/18/2017-11-18-Objective-C%E7%9A%84%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/&text=Objective-C的内存管理" target="_blank" rel="noopener"><i
+                    class="fab fa-twitter " aria-hidden="true"></i></a></li>
+    <li><a class="icon" href="mailto:?subject=Objective-C的内存管理&body=Check out this article: http://yoursite.com/2017/11/18/2017-11-18-Objective-C%E7%9A%84%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/"><i
+                    class="fas fa-envelope " aria-hidden="true"></i></a></li>
+</ul>
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#内存管理概述"><span class="toc-number">1.</span> <span class="toc-text">内存管理概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#引用计数"><span class="toc-number">2.</span> <span class="toc-text">引用计数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#内存管理基本规则"><span class="toc-number">2.1.</span> <span class="toc-text">内存管理基本规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#引用计数存在什么地方？"><span class="toc-number">2.2.</span> <span class="toc-text">引用计数存在什么地方？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#autorelease"><span class="toc-number">2.3.</span> <span class="toc-text">autorelease</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#自动引用计数（ARC）"><span class="toc-number">3.</span> <span class="toc-text">自动引用计数（ARC）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#对象类型和id类型必须附加所有权修饰符"><span class="toc-number">3.1.</span> <span class="toc-text">对象类型和id类型必须附加所有权修饰符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于init"><span class="toc-number">3.2.</span> <span class="toc-text">关于init</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ARC的实现"><span class="toc-number">4.</span> <span class="toc-text">ARC的实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#strong"><span class="toc-number">4.1.</span> <span class="toc-text">__strong</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#weak"><span class="toc-number">4.2.</span> <span class="toc-text">__weak</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+<div class="content index py4">
+    
+    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+        
+    <h1 class="posttitle" itemprop="name headline">
+        Objective-C的内存管理
+    </h1>
+
+        <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">
+            展荣
+            
+        </span>
+      </span>
+            
+    <div class="postdate">
+        
+            <time datetime="2017-11-17T16:00:00.000Z"
+                  itemprop="datePublished">2017-11-18</time>
+            
+        
+    </div>
+
+            
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Objective-C/">Objective-C</a>
+    </div>
+
+            
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/iOS/" rel="tag">iOS</a>
+    </div>
+
+        </div>
+    </header>
+    
+    <div class="content" itemprop="articleBody">
+        <p>前段时间捡起来<a href="http://www.ituring.com.cn/book/1023" target="_blank" rel="noopener">Objective-C高级编程：iOS与OS X多线程和内存管理</a>，上面的链接可以直接看第一章。然后朋友开玩笑说“现在看OC就跟1949年加入国名党一样啊”。不吹不黑，OC还是蛮有意思的。即便apple的审核让人叫苦不迭。技术单纯为技术。OC如同它所属公司一样，是优雅的语言。</p>
+<h2 id="内存管理概述">内存管理概述</h2>
+<p>内存管理，其目的就是以为了能够<strong>快速分配内存，并且适当的时候释放并且回收内存</strong>。从内存四区来看只有<strong>堆区</strong>的内存是可以程序来申请和释放的。那么Objective-C是如何进行内存管理的？常见的的方式有如下三种</p>
+<ol>
+<li>
+<p>手动内存管理（MRC）-- 手动增加和减少引用计数</p>
+</li>
+<li>
+<p>自动引用计数（ARC）</p>
+</li>
+<li>
+<p>自动垃圾回收</p>
+</li>
+</ol>
+<p><em>自动垃圾回收是Mac上的应用才支持，这里就不做讨论了，(自己也没搞明白）</em></p>
+<h2 id="引用计数">引用计数</h2>
+<blockquote>
+<p>引用计数：顾名思义就是引用了就加一个计数，不用了就减少一个计数。</p>
+</blockquote>
+<h3 id="内存管理基本规则">内存管理基本规则</h3>
+<ul>
+<li><strong>自己生成的对象，自己持有</strong></li>
+</ul>
+<p>所有以<strong>alloc/new/copy/mutableCopy</strong>开头的方法生成对象都为自己持有。<em>注意是驼峰命名方式的哈</em></p>
+<ul>
+<li><strong>不是自己生成的，自己可以持有</strong></li>
+</ul>
+<p>不是自己持有的对象，需要加retain进行持有。比如<code>id obj = [obj0 object]</code>取得了对象，但不持有。<code>[obj retain]</code>之后才可持有这个对象。此时引用计数+1。</p>
+<ul>
+<li><strong>自己不用的对象，自己需要释放</strong></li>
+</ul>
+<p>release释放自己不需要的对象内存<code>[obj release]</code></p>
+<ul>
+<li><strong>不是自己持有的对象，无法释放</strong></li>
+</ul>
+<p>当上面的obj 在retain后立马执行<code>[obj release]</code>后，obj不在持有对象，此时在次执行<code>[obj release]</code>会因为访问已经废弃的对象导致奔溃。</p>
+<h3 id="引用计数存在什么地方？">引用计数存在什么地方？</h3>
+<p>采用了哈希表（散列表）进行存储，表键值是内存地址的散列值。这样处理能够在追溯到各个内存块的位置。</p>
+<h3 id="autorelease">autorelease</h3>
+<p>这个名称看起来就像自动释放，有点内存自动管理的意思。但是并不是，实际上，在ARC的开发环境下，是不允许对某个对象发送<code>[obj autorelease]</code>消息的。<br>
+顾名思义为自动释放，在C的语法中，局部变量也是在超出作用域就自动被废弃。这也正是autorelease的作用。当一个向一个对象发送<code>autorelease</code>后,在超出作用域的时候将被自动释放，也就是会调用release方法。而这个作用域和局部变量不同的是，该作用域可以有我们控制起来啊。生成对象<code>pool = [NSAutoreleasePool alloc] init]</code>,废弃pool对象<code>[pool drain]</code>，这中间调用autorelease方法，在废弃pool对象的时候，所有会自动调用release方法。</p>
+<blockquote>
+<p>NSRunLoop每次循环会创建和废弃NSAutoreleasePool对象</p>
+</blockquote>
+<blockquote>
+<p>不废弃NSAutoreleasePool对象，将不会废弃已发送autorelease消息的对象。</p>
+</blockquote>
+<p>由于在作用域结束的时候，需要释放，结合上面的规则不是自己持有的对象，无法释放。也可得知<strong>autorelease可以持有不是自己生成的对象</strong>。</p>
+<h2 id="自动引用计数（ARC）">自动引用计数（ARC）</h2>
+<p>知道了引用计数，之前的手动的添加retain、 release太容易出错了。因此在iOS5.0系统和OSX10.7系统之后，在Xcode4.2版本以上可以使用这一特性。降低程序奔溃的同时，还减少了工作量。美滋滋。苹果官方的说法是：<strong>由编译器进行内存管理</strong>，也就是编译器【clang (LLVM编译器) 3.0以上】就可以完成。实际上在这个基础上还需要Objective-C运行库的协助。</p>
+<h3 id="对象类型和id类型必须附加所有权修饰符">对象类型和id类型必须附加所有权修饰符</h3>
+<ul>
+<li><strong>__strong</strong></li>
+<li><strong>__weak</strong></li>
+<li><strong>__unsafe_unretained</strong></li>
+<li><strong>__autoreleasing修饰符</strong></li>
+</ul>
+<ol>
+<li>
+<p>__strong<br>
+<strong>是id类型和对象类型默认的所有权修饰符</strong>，修饰的变量在超出变量作用域的时候，该变量会被废弃，其被赋予的对象会执行release方法而被释放。<strong>强引用就是在该引用失效后，引用的变量也要被释放</strong>,只要有任何__strong类型的变量指向对象A，ARC就不会销毁它（A）。如下图中<img src="https://gitee.com/zzRong/MyPics/raw/master/img/strong%E7%B1%BB%E5%9E%8B%E5%8F%98%E9%87%8F%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg" alt=""></p>
+</li>
+<li>
+<p>__weak<br>
+如果相互持有对方的引用，如果这时候使用__strong修饰符就会造成<em>循环引用</em>。但是使用__weak修饰符可以避免这个问题。因为*__weak不会持有对象的实例*，在超出变量作用域之后，其引用的对象就立即被释放,__weak所指向的对象B，只要没有其他__strong指向该对象（B），ARC会销毁它（B）。这里同样给出一个示意图：</p>
+</li>
+</ol>
+<p><img src="https://gitee.com/zzRong/MyPics/raw/master/img/weak%E7%B1%BB%E5%9E%8B%E5%8F%98%E9%87%8F%E7%A4%BA%E6%84%8F%E5%9B%BE.jpg" alt=""></p>
+<p>这里变量b是weak类型。当变量a不在持有对象A的时候，对象A将被销毁，说明weak变量是不会持有其指向的对象。</p>
+<ol start="3">
+<li>
+<p>__unsafe_unretained<br>
+名称上可以看出是一个不安全的不会增加引用计数的所有权修饰符，也就是和weak一样，不会持有所引用的对象。这个也是在__weak还未出现的时候，用来替代__weak修饰符的。但是区别在于：<strong>__unsafe_unretained并不会和__weak一样将指针自动置为nil，因此会造成野指针问题</strong>。访问野指针是会crash的，如今有了weak，还是少用这个修饰符吧。</p>
+</li>
+<li>
+<p>__autoreleasing<br>
+在MRC下我们可以使用NSAutoreleasePool,并且向对象发送<code>autorelease</code>消息，但在ARC下这样做事不允许的。如何在ARC下使用呢。于是就有了，__autoreleasing 修饰符。它就等价于向对象发送<code>autorelease</code>消息。而使用<code>@autoreleasepool{... ...}</code>等价于NSAutoreleasePool的生成释放等。<br>
+默认情况下，会自动的给id类型和对象类型附加上__autoreleasing修饰符。编译器会检查是否<strong>alloc/new/copy/mutableCopy</strong>开始的方法名进行对象的生成，如果不是的话，将会自动添加到autoreleasepool中，这样就可以保证了不是自己生成的对象，也能持有。这其中的特例为<strong>init</strong>开头的方法,要求比较严格，并不会注册到autoreleasepool中。</p>
+</li>
+</ol>
+<h3 id="关于init">关于init</h3>
+<p>以init开头的方法要求有：</p>
+<ol>
+<li>
+<p>必须是实例方法。</p>
+</li>
+<li>
+<p>必须返回对象。</p>
+</li>
+<li>
+<p>返回的对象不会注册到autoreleasepool中。</p>
+</li>
+</ol>
+<p>常见用法是对alloc方法返回的对象进行初始化操作，然后返回该对象。那么在ARC环境下，<strong>默认注册到autoreleasepool中的情况</strong>有那些呢？根据前面介绍的其实总结到</p>
+<ol>
+<li>作为返回值的时候，在函数作用域结束之后，该对象仍然被持有，这样可以做到延后释放。</li>
+<li>使用__weak修饰符的变量，在变量作用域结束的时候，变量会被释放，将不能被正常使用，因此会自动注册到autoreleasepool中。</li>
+<li>id的指针类型，或者对象的指针类型的变量会被默认附加上__autoreleasing修饰符。这个和id obj 会默认附加上id __strong obj; 这里存在一个问题就是我们知道strong weak这样的修饰符会保证id类型的变量初始化为nil，但是如果是id*却不被保证。也就是说需要手动设置为nil，全部展开应该是这样的的：<code>NSObject __autoreleasing * __strong *array = nil</code>。</li>
+</ol>
+<h2 id="ARC的实现">ARC的实现</h2>
+<h3 id="strong">__strong</h3>
+<p>先写一段一下的代码</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import<span class="meta-string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"><span class="keyword">int</span> main()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">id</span> __<span class="keyword">strong</span> obg = [[<span class="built_in">NSObject</span> alloc]init];</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后进行汇编输出后<img src="https://gitee.com/zzRong/MyPics/raw/master/img/__strong%E6%B1%87%E7%BC%96%E8%BE%93%E5%87%BA.png" alt=""><br>
+会发现有一句 callq _objc_storeStrong。而这个方法的原型是：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//location引用对象指针的地址</span></span><br><span class="line"><span class="comment">//obj 对象本身</span></span><br><span class="line"><span class="keyword">void</span> objc_storeStrong(<span class="keyword">id</span> *location, <span class="keyword">id</span> obj)</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">id</span> prev = *location;</span><br><span class="line">    <span class="keyword">if</span> (obj == prev) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    objc_retain(obj);</span><br><span class="line">    *location = obj;</span><br><span class="line">    objc_release(prev);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>该函数的基本逻辑可以看出，如果和之前是同一个引用则直接return，否则将进行retain操作。然后释放之前的引用。这正是强引用的实际效果。<br>
+如果是引用的是一个不是自己生成持有的对象的话呢，例如 <code>[NSMutableArray array]</code>函数这里就不贴图了，同样的方法会发现多了·<code>	callq	_objc_retainAutoreleasedReturnValue</code>这么一个函数，与之配对的是_objc_autoreleaseReturnValue。而这对函数主要的作用是在优化。正常情况下是需要将注册到autoreleasepool中的。然后再返回。如果调用后紧接着调用了_objc_retainAutoreleasedReturnValue，将不会<strong>注册到autoreleasepool中，而是自己返回对象，减少了一次主持autoreleasepool的操作</strong>。</p>
+<h3 id="weak">__weak</h3>
+<p>有上头的objc_storeStrong方法，也就有与之对应的。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">id</span> objc_storeWeak(<span class="keyword">id</span> *location, <span class="keyword">id</span> newObj)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">id</span> oldObj;</span><br><span class="line">    SideTable *oldTable;</span><br><span class="line">    SideTable *newTable;</span><br><span class="line">    </span><br><span class="line"> retry:</span><br><span class="line">    oldObj = *location;</span><br><span class="line">    oldTable = SideTable::tableForPointer(oldObj);</span><br><span class="line">    newTable = SideTable::tableForPointer(newObj);</span><br><span class="line">    <span class="comment">//......</span></span><br><span class="line">    <span class="keyword">if</span> (*location != oldObj) &#123;</span><br><span class="line">        OSSpinLockUnlock(lock1);</span><br><span class="line">/<span class="meta">#<span class="meta-keyword">if</span> SIDE_TABLE_STRIPE &gt; 1</span></span><br><span class="line">        <span class="keyword">if</span> (lock1 != lock2) OSSpinLockUnlock(lock2);</span><br><span class="line">/<span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">        <span class="keyword">goto</span> retry;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (oldObj) &#123;</span><br><span class="line">        weak_unregister_no_lock(&amp;oldTable-&gt;weak_table, oldObj, location);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (newObj) &#123;</span><br><span class="line">        newObj = weak_register_no_lock(&amp;newTable-&gt;weak_table, newObj,location);</span><br><span class="line">    &#125;</span><br><span class="line">    *location = newObj;</span><br><span class="line">   <span class="comment">// ......</span></span><br><span class="line">    <span class="keyword">return</span> newObj</span><br></pre></td></tr></table></figure>
+<p>可以看出首先获取到新对象和内部维护的一个与之新旧对象相关的SideTable表。然后移除老对象的指向信息。然后将指针指向新对象。最后返回这个新对象。从中可证实weak弱引用的特点。因此每次创建需要去查表。而同时一个对象可以被复制给多个变量，当weak变量多了之后，每次创建和销毁都将带来大量的查表工作。会消耗一定CPU资源。因此，<strong>一般只在避免循环引用的情况下才使用weak</strong></p>
+<blockquote>
+<p>autoreleasing 在__strong那里的_objc_retainAutoreleasedReturnValue就说过，不赘述了。</p>
+</blockquote>
+
+    </div>
+</article>
+
+    <div class="blog-post-comments">
+        <section id="comment">
+            <div id="valine_container" class="valine_thread"></div>
+        </section>
+        <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+        <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+        <script>
+            var GUEST_INFO = ['nick', 'mail', 'link'];
+            var guest_info = 'nick,mail,link'.split(',').filter(function (item) {
+                return GUEST_INFO.indexOf(item) > -1
+            });
+            var notify = 'true' == true;
+            var verify = 'false' == true;
+            var valine = new Valine();
+            valine.init({
+                el: '#valine_container',
+                notify: notify,
+                verify: verify,
+                appId: "yA9rEta0AtnHiiVjV0tHVU95-gzGzoHsz",
+                appKey: "80QovNkdJKrsyXsgRg7UEI0n",
+                placeholder: "Just go go",
+                pageSize: '10',
+                avatar: 'mm',
+                lang: 'zh-cn'
+            })
+        </script>
+    </div>
+
+    
+        <div id="footer-post-container">
+    <div id="footer-post">
+
+        <div id="nav-footer" style="display: none">
+            <ul>
+                
+                    <li><a href="/">首页</a></li>
+                
+                    <li><a href="/archives/">归档</a></li>
+                
+                    <li><a href="/categories/">分类</a></li>
+                
+                    <li><a href="/tags/">标签</a></li>
+                
+                    <li><a href="/about/">关于</a></li>
+                
+                    <li><a href="/search/">搜索</a></li>
+                
+            </ul>
+        </div>
+
+        <div id="toc-footer" style="display: none">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#内存管理概述"><span class="toc-number">1.</span> <span class="toc-text">内存管理概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#引用计数"><span class="toc-number">2.</span> <span class="toc-text">引用计数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#内存管理基本规则"><span class="toc-number">2.1.</span> <span class="toc-text">内存管理基本规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#引用计数存在什么地方？"><span class="toc-number">2.2.</span> <span class="toc-text">引用计数存在什么地方？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#autorelease"><span class="toc-number">2.3.</span> <span class="toc-text">autorelease</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#自动引用计数（ARC）"><span class="toc-number">3.</span> <span class="toc-text">自动引用计数（ARC）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#对象类型和id类型必须附加所有权修饰符"><span class="toc-number">3.1.</span> <span class="toc-text">对象类型和id类型必须附加所有权修饰符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关于init"><span class="toc-number">3.2.</span> <span class="toc-text">关于init</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ARC的实现"><span class="toc-number">4.</span> <span class="toc-text">ARC的实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#strong"><span class="toc-number">4.1.</span> <span class="toc-text">__strong</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#weak"><span class="toc-number">4.2.</span> <span class="toc-text">__weak</span></a></li></ol></li></ol>
+        </div>
+
+        <div id="share-footer" style="display: none">
+            <ul>
+    <li><a class="icon"
+           href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2017/11/18/2017-11-18-Objective-C%E7%9A%84%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/&title=Objective-C的内存管理"><i
+                    class="fab fa-qq fa-lg" aria-hidden="true"></i></a></li>
+    <li><a class="icon"
+           href="https://service.weibo.com/share/share.php?url=http://yoursite.com/2017/11/18/2017-11-18-Objective-C%E7%9A%84%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/&title=Objective-C的内存管理"><i
+                    class="fab fa-weibo fa-lg" aria-hidden="true"></i></a></li>
+    <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2017/11/18/2017-11-18-Objective-C%E7%9A%84%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/&text=Objective-C的内存管理" target="_blank" rel="noopener"><i
+                    class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+    <li><a class="icon" href="mailto:?subject=Objective-C的内存管理&body=Check out this article: http://yoursite.com/2017/11/18/2017-11-18-Objective-C%E7%9A%84%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/"><i
+                    class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+        </div>
+
+        <div id="actions-footer">
+            <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i
+                        class="fas fa-bars fa-lg"
+                        aria-hidden="true"></i> 菜单</a>
+            <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i
+                        class="fas fa-list fa-lg"
+                        aria-hidden="true"></i> 目录</a>
+            <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i
+                        class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+            <a id="top" style="display:none" class="icon" href="#"
+               onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg"
+                                                                               aria-hidden="true"></i> 返回顶部
+            </a>
+        </div>
+
+    </div>
+</div>
+    
+    <footer id="footer">
+    <div class="footer-left">
+        Copyright &copy; 2025 <i class="fas fa-heart"></i>
+        展荣
+        
+    </div>
+    <!-- <div class="footer-right">
+    <nav>
+      <ul>
+        
+        <li><a href="/">首页</a></li>
+        
+        <li><a href="/archives/">归档</a></li>
+        
+        <li><a href="/categories/">分类</a></li>
+        
+        <li><a href="/tags/">标签</a></li>
+        
+        <li><a href="/about/">关于</a></li>
+        
+        <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </nav>
+  </div> -->
+
+    <div class="footer-custom">
+        Framework by <a href="https://hexo.io" target="_blank">Hexo</a> & Theme by <a
+                href="https://github.com/xuthus5/hexo-theme-cactus" target="_blank">Cactus-CN</a>
+        
+    </div>
+</footer>
+</div>
+<!-- styles -->
+
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css">
+
+
+<link rel="stylesheet" href="https://cdn.staticfile.org/justifiedGallery/3.7.0/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+
+<script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+
+
+<script src="https://cdn.staticfile.org/justifiedGallery/3.7.0/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+    
+<script src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            // copy-btn HTML
+            var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+            btn += '<i class="far fa-clone"></i>';
+            btn += '</span>';
+            // mount it!
+            $(".highlight .code pre").before(btn);
+            var clip = new ClipboardJS('.btn-copy', {
+                target: function (trigger) {
+                    return trigger.nextElementSibling;
+                }
+            });
+            clip.on('success', function (e) {
+                e.trigger.setAttribute('aria-label', "复制成功!");
+                e.clearSelection();
+            })
+        })
+    </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+</body>
+
+</html>

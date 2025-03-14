@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    
+    
+        
+            
+                <link rel="shortcut icon" href="/images/favicon.ico">
+            
+        
+        
+            
+                <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+            
+        
+        
+            
+                <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+            
+        
+    
+    <!-- title -->
+    <title>游戏集成苹果IAP内购</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+SC&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@2/distr/fira_code.css" rel="stylesheet">
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+
+    <div id="header-post">
+    <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+    <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i
+                class="fas fa-chevron-up fa-lg"></i></a>
+    <span id="menu">
+    <span id="nav">
+      <ul>
+          
+              <li><a href="/">首页</a></li>
+          
+              <li><a href="/archives/">归档</a></li>
+          
+              <li><a href="/categories/">分类</a></li>
+          
+              <li><a href="/tags/">标签</a></li>
+          
+              <li><a href="/about/">关于</a></li>
+          
+              <li><a href="/search/">搜索</a></li>
+          
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+          
+              <li><a class="icon" href="/2020/06/15/2020-06-15-%E4%BD%BF%E7%94%A8colyseus%E5%92%8Ccocos%E5%BC%80%E5%8F%91%E7%8A%B6%E6%80%81%E5%90%8C%E6%AD%A5%E6%B8%B8%E6%88%8F/"><i class="fas fa-chevron-left"
+                                                                           aria-hidden="true"
+                                                                           onmouseover="$('#i-prev').toggle();"
+                                                                           onmouseout="$('#i-prev').toggle();"></i></a></li>
+          
+          
+              <li><a class="icon" href="/2019/05/21/2019-05-21-%E5%8C%BA%E5%9D%97%E9%93%BE%E5%92%8C%E6%AF%94%E7%89%B9%E5%B8%81/"><i class="fas fa-chevron-right"
+                                                                           aria-hidden="true"
+                                                                           onmouseover="$('#i-next').toggle();"
+                                                                           onmouseout="$('#i-next').toggle();"></i></a></li>
+          
+          <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i
+                          class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();"
+                          onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true"
+                                        onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();"
+                                        onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+    <li><a class="icon"
+           href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2020/05/23/2020-05-23-%E6%B8%B8%E6%88%8F%E9%9B%86%E6%88%90%E8%8B%B9%E6%9E%9CIAP%E5%86%85%E8%B4%AD/&title=游戏集成苹果IAP内购"><i
+                    class="fab fa-qq " aria-hidden="true"></i></a></li>
+    <li><a class="icon"
+           href="https://service.weibo.com/share/share.php?url=http://yoursite.com/2020/05/23/2020-05-23-%E6%B8%B8%E6%88%8F%E9%9B%86%E6%88%90%E8%8B%B9%E6%9E%9CIAP%E5%86%85%E8%B4%AD/&title=游戏集成苹果IAP内购"><i
+                    class="fab fa-weibo " aria-hidden="true"></i></a></li>
+    <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2020/05/23/2020-05-23-%E6%B8%B8%E6%88%8F%E9%9B%86%E6%88%90%E8%8B%B9%E6%9E%9CIAP%E5%86%85%E8%B4%AD/&text=游戏集成苹果IAP内购" target="_blank" rel="noopener"><i
+                    class="fab fa-twitter " aria-hidden="true"></i></a></li>
+    <li><a class="icon" href="mailto:?subject=游戏集成苹果IAP内购&body=Check out this article: http://yoursite.com/2020/05/23/2020-05-23-%E6%B8%B8%E6%88%8F%E9%9B%86%E6%88%90%E8%8B%B9%E6%9E%9CIAP%E5%86%85%E8%B4%AD/"><i
+                    class="fas fa-envelope " aria-hidden="true"></i></a></li>
+</ul>
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#"><span class="toc-number">1.</span> <span class="toc-text">游戏集成苹果内购（IAP）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#苹果的支付流程与丢单"><span class="toc-number">1.1.</span> <span class="toc-text">苹果的支付流程与丢单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#本地化订单"><span class="toc-number">1.2.</span> <span class="toc-text">本地化订单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关于订单完结"><span class="toc-number">1.3.</span> <span class="toc-text">关于订单完结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#用户系统映射"><span class="toc-number">1.4.</span> <span class="toc-text">用户系统映射</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他"><span class="toc-number">1.5.</span> <span class="toc-text">其他</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+<div class="content index py4">
+    
+    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+        
+    <h1 class="posttitle" itemprop="name headline">
+        游戏集成苹果IAP内购
+    </h1>
+
+        <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">
+            展荣
+            
+        </span>
+      </span>
+            
+    <div class="postdate">
+        
+            <time datetime="2020-05-23T07:23:47.000Z"
+                  itemprop="datePublished">2020-05-23</time>
+            
+        
+    </div>
+
+            
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">游戏开发</a> › <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/%E6%94%AF%E4%BB%98/">支付</a>
+    </div>
+
+            
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/iOS/" rel="tag">iOS</a>
+    </div>
+
+        </div>
+    </header>
+    
+    <div class="content" itemprop="articleBody">
+        <h1>游戏集成苹果内购（IAP）</h1>
+<p>做游戏的，肯定是绕不过去苹果这个平台的。而且苹果的审核是众所周知的坑，特别是对支付这一块。国内大多数玩法，是由 cp 提供游戏，然后找一家（或者 N 家）渠道去上不同的平台。</p>
+<p>这种玩法的好处就是，做游戏的 cp 方，只需要对接好渠道的 sdk 就好了， 然后由渠道去推到不同的平台。至于不同平台上可能遇到的坑，渠道的 sdk 应该基本都完善过了。比如，苹果支付就是天然的坑，网上一搜一大堆相关的介绍，大致流程都一样。刚好自己这次需要接入这么个东西，记录一下。</p>
+<h2 id="苹果的支付流程与丢单">苹果的支付流程与丢单</h2>
+<p><img src="https://gitee.com/zzRong/MyPics/raw/master/img/20200605151225.png" alt=""></p>
+<p>我自己画了个大概的图，整个支付流程是以客户端中心的。而我们知道的大多数支付系统，都是以服务器为中心，客户端只要发起支付，之后的流程就完全依赖于平台的服务器和游戏服务器之间的通信了。</p>
+<p>这样的好处是更好的保证了交易的完整性，但是缺点也有，就是对个人开发者而言，维护成本更高，比如就想做个休闲小游戏的内购，都还要假设一台服务器。</p>
+<p>而苹果的这套支付机制，更好的方便了个人开发者，但是对支付的完整性就存在很多问题，比如很多人诟病的丢单问题。</p>
+<p><img src="https://gitee.com/zzRong/MyPics/raw/master/img/55849068-DB4D-4921-9DA4-DC291CB4B0FF.png" alt=""></p>
+<p>上面两个图能看出， 如果先完成支付之后，之后的验证订单步骤因为其他原因失败了，就会出现丢单的情况。这也是苹果支付上经常出现的BUG：<code>丢单，用户付钱了，但是没收到货。不能忍啊</code></p>
+<p>大多数情况都是因为网络波动导致的丢单。比如在第 5 步，当客户端收到来自苹果的支付收据应该向游戏服务器进行二次验证的时候，网刚好断了，游戏服务器没收到支付凭证，玩家也就收不到货了。</p>
+<h2 id="本地化订单">本地化订单</h2>
+<p>由于整个支付机制是以客户端为中心进行的。为了防止丢单，主流做法是将订单保存起来。在 iOS 上有很多本地保存的方法。我是用 <code>NSKeyedArchiver</code>来实现的。</p>
+<p>可以维护一个遵守<code>&lt;NSCoding&gt;</code>协议的自定义对象 PayInfo ;</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">IAPPayInfo</span> : <span class="title">NSObject</span> &lt;<span class="title">NSCoding</span>&gt; </span>&#123;</span><br><span class="line"> 	  <span class="built_in">NSString</span> *_productid;</span><br><span class="line">    <span class="keyword">int</span> _count;</span><br><span class="line">    <span class="built_in">NSString</span> *_name;</span><br><span class="line">    <span class="built_in">NSString</span> *_price;</span><br><span class="line">	  <span class="built_in">NSString</span> * _uid;</span><br><span class="line">    <span class="built_in">NSString</span> * _receipt;</span><br><span class="line">	  ...</span><br><span class="line">	  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后维护一个 <code>NSDictionary</code>， 用<code>key - value</code>的形式进行存储，并进行归档处理。</p>
+<p>流程上可以：</p>
+<ul>
+<li>当用户发起支付的时候，生成一个 payInfo，和一个订单 id （这一步可改进，后面再说）；</li>
+<li>当收到苹果订单收据的时候，通过携带的订单 id 去更新对应的 payInfo 的收据；</li>
+<li>当游戏服务器二次验证成功返回后（订单有效）从删除对应的 payInfo ；</li>
+</ul>
+<p>其实还有一个情况，当苹果订单支付返回失败时，理论上应删除对应的 payInfo。但是我不建议这么做！这里有一个坑点：<strong>当App Store的policy更新时</strong>，一笔成功的订单，会先收到一个<code>SKPaymentTransactionStateFailed</code>的失败回调，然后紧接着再收到<code>SKPaymentTransactionStatePurchased</code>成功回调。</p>
+<p>同时为了防止正常失败的无效订单轮训的次数太多，可以通过增加 payInfo 的状态属性或者判断收据字段来排除过多的无效请求。轮训上也可以使用递增时间间隔来做优化。</p>
+<h2 id="关于订单完结">关于订单完结</h2>
+<p>苹果官方的文档关于这个接口又是这么写的：<br>
+<a href="https://developer.apple.com/documentation/storekit/skpaymentqueue/1506003-finishtransaction?language=objc" target="_blank" rel="noopener">苹果接口文档 finishTransaction: </a><br>
+![]<img src="https://gitee.com/zzRong/MyPics/raw/master/img/57969E17-BE75-4232-9D25-2EB81972998B.png" alt=""></p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[<span class="built_in">SKPaymentQueue</span> defaultQueue] finishTransaction:tran];</span><br></pre></td></tr></table></figure>
+<p>苹果的做法是通过设置<code>SKPaymentTransactionObserver</code>delegate 来给客户端回调支付状态的。<br>
+如果客户端不finish这个订单，下次再登录的时候，还会继续通过delegate回调个客户端。</p>
+<p>因此，其实正常情况下，是可以只依赖苹果系统的回调来做补单操作，等服务器二次验证之后再执行完结订单的操作。</p>
+<p>苹果的文档中也提示：对于成功的订单需要在完结订单之前去验证这笔订单。不过对于失败的订单，是需要直接完结的。这一点其实在 13.4系统之前是没问题的，<strong>而自从更新了 13.4 系统之后，如果收到订单不立即执行finish操作，下一笔订单将会直接失败！！</strong> 用13.4系统自测可以复现：拉起支付- 取消支付- 再拉起支付，结果是之后的支付都直接提示失败。</p>
+<p>然而，再对比上面一节说的<strong>当App Store的policy更新时会先收到一个失败回调再收到成功</strong>的情况。失败直接完结订单，就可能会导致丢单的情况。</p>
+<p>所以，最后的方案还是一了百了。不再依赖苹果的回调作为补单，收到订单状态后直接完结订单，全部本地化保存订单的方式。</p>
+<h2 id="用户系统映射">用户系统映射</h2>
+<p>购买成功，服务器需要给用户发道具，那二次验证的时候客户端需要把对应的用户游戏内的 id 发送过去的。<br>
+而苹果在发起支付的时候，只提供了一个<code>payment.applicationUsername</code>属性用来传递参数。</p>
+<p>也就是说，在发起支付的时候，客户端生成一个唯一 orderid 作为 payInfo 对象的key，将玩家 uid 保存在这个支付结构体内，然后设置<code>payment.applicationUsername </code>的值为<code>orderid</code>，在收到苹果回调的时候，用这个值去查询对应的 payInfo，这样整个支付相关的数据也就能取出来了。</p>
+<p>不过这里也存在一个坑，当用户的 apple id 没有绑定过任何支付方式，首次发起购买时，会先跳转出去设置付款方式，等设置完再完成付款时，收到来自苹果的订单回调中的<code>payment.applicationUsername</code>会为 <code>nil</code>。</p>
+<p>但这个<code>payment.applicationUsername </code>是苹果目前唯一允许携带个人信息的字段了。如果遇到这种返回<code>nil</code>的极端情况，可以通过 keyChain 和  transactionDate 的购买时间范围尝试恢复订单但是也不能 100% 匹配上。</p>
+<h2 id="其他">其他</h2>
+<p>苹果的支付流程，应该是先从 AppStore 请求支付商品，然后拿着商品信息再想 AppStore 发起支付。也就是本文第一个图的 第 1、2 两步。</p>
+<p>而游戏内常见的做法是游戏内进行配表，在配表内将 AppStore 后台对应的商品 ID 填上，直接跳过苹果请求订单的步骤，利用配表内的信息去创建订单。</p>
+<p>但是，创建支付订单<code>SKMutablePayment</code>之前可以直接通过ProductId直接创建，而现在，从苹果API上可以看出，发起支付的参数是不再允许使用</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="built_in">SKMutablePayment</span> paymentWithProductIdentifier:(<span class="built_in">NSString</span> *)identifier</span><br><span class="line"><span class="comment">//取而代之的是:</span></span><br><span class="line">[<span class="built_in">SKMutablePayment</span> paymentWithProduct: (<span class="built_in">SKProduct</span> *)product]</span><br></pre></td></tr></table></figure>
+<p><img src="https://gitee.com/zzRong/MyPics/raw/master/img/BD2BFBB1-52B8-484F-9546-C95D87069D6A.png" alt=""></p>
+<p>但也不是没办法，只要设置上这个<code>SKMutablePayment</code><br>
+的<code>productIdentifier</code>属性也是一样的。可以直接通过原始的alloc来做：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">SKMutablePayment</span> *payment = [[<span class="built_in">SKMutablePayment</span> alloc]init]; </span><br><span class="line">payment.productIdentifier =  <span class="string">"productId"</span>;</span><br></pre></td></tr></table></figure>
+<p>不过我这里还是使用了<code>[SKMutablePayment paymentWithProduct: (SKProduct *)product]</code>这个方法来创建 payment。<br>
+不过换了一下做法，而是在游戏启动的时候，直接从 AppStore 上请求所有的支付数据，然后保存在一个 <code>NSMutableDictionary</code>中，然后当游戏内点击某商品准备购买的时候，再从这个<code>NSMutableDictionary</code>中取出对应的 <code>SKProduct</code>。</p>
+<p>这样，当返回的 <code>SKProduct</code> 不为空的时候，直接用它创建订单，否则就使用<code>payment.productIdentifier =  &quot;productId&quot;;</code>的方式进行创建。</p>
+<p>Ps  ：填坑完成呀</p>
+
+    </div>
+</article>
+
+    <div class="blog-post-comments">
+        <section id="comment">
+            <div id="valine_container" class="valine_thread"></div>
+        </section>
+        <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+        <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+        <script>
+            var GUEST_INFO = ['nick', 'mail', 'link'];
+            var guest_info = 'nick,mail,link'.split(',').filter(function (item) {
+                return GUEST_INFO.indexOf(item) > -1
+            });
+            var notify = 'true' == true;
+            var verify = 'false' == true;
+            var valine = new Valine();
+            valine.init({
+                el: '#valine_container',
+                notify: notify,
+                verify: verify,
+                appId: "yA9rEta0AtnHiiVjV0tHVU95-gzGzoHsz",
+                appKey: "80QovNkdJKrsyXsgRg7UEI0n",
+                placeholder: "Just go go",
+                pageSize: '10',
+                avatar: 'mm',
+                lang: 'zh-cn'
+            })
+        </script>
+    </div>
+
+    
+        <div id="footer-post-container">
+    <div id="footer-post">
+
+        <div id="nav-footer" style="display: none">
+            <ul>
+                
+                    <li><a href="/">首页</a></li>
+                
+                    <li><a href="/archives/">归档</a></li>
+                
+                    <li><a href="/categories/">分类</a></li>
+                
+                    <li><a href="/tags/">标签</a></li>
+                
+                    <li><a href="/about/">关于</a></li>
+                
+                    <li><a href="/search/">搜索</a></li>
+                
+            </ul>
+        </div>
+
+        <div id="toc-footer" style="display: none">
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#"><span class="toc-number">1.</span> <span class="toc-text">游戏集成苹果内购（IAP）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#苹果的支付流程与丢单"><span class="toc-number">1.1.</span> <span class="toc-text">苹果的支付流程与丢单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#本地化订单"><span class="toc-number">1.2.</span> <span class="toc-text">本地化订单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#关于订单完结"><span class="toc-number">1.3.</span> <span class="toc-text">关于订单完结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#用户系统映射"><span class="toc-number">1.4.</span> <span class="toc-text">用户系统映射</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#其他"><span class="toc-number">1.5.</span> <span class="toc-text">其他</span></a></li></ol></li></ol>
+        </div>
+
+        <div id="share-footer" style="display: none">
+            <ul>
+    <li><a class="icon"
+           href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2020/05/23/2020-05-23-%E6%B8%B8%E6%88%8F%E9%9B%86%E6%88%90%E8%8B%B9%E6%9E%9CIAP%E5%86%85%E8%B4%AD/&title=游戏集成苹果IAP内购"><i
+                    class="fab fa-qq fa-lg" aria-hidden="true"></i></a></li>
+    <li><a class="icon"
+           href="https://service.weibo.com/share/share.php?url=http://yoursite.com/2020/05/23/2020-05-23-%E6%B8%B8%E6%88%8F%E9%9B%86%E6%88%90%E8%8B%B9%E6%9E%9CIAP%E5%86%85%E8%B4%AD/&title=游戏集成苹果IAP内购"><i
+                    class="fab fa-weibo fa-lg" aria-hidden="true"></i></a></li>
+    <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2020/05/23/2020-05-23-%E6%B8%B8%E6%88%8F%E9%9B%86%E6%88%90%E8%8B%B9%E6%9E%9CIAP%E5%86%85%E8%B4%AD/&text=游戏集成苹果IAP内购" target="_blank" rel="noopener"><i
+                    class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+    <li><a class="icon" href="mailto:?subject=游戏集成苹果IAP内购&body=Check out this article: http://yoursite.com/2020/05/23/2020-05-23-%E6%B8%B8%E6%88%8F%E9%9B%86%E6%88%90%E8%8B%B9%E6%9E%9CIAP%E5%86%85%E8%B4%AD/"><i
+                    class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+        </div>
+
+        <div id="actions-footer">
+            <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i
+                        class="fas fa-bars fa-lg"
+                        aria-hidden="true"></i> 菜单</a>
+            <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i
+                        class="fas fa-list fa-lg"
+                        aria-hidden="true"></i> 目录</a>
+            <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i
+                        class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+            <a id="top" style="display:none" class="icon" href="#"
+               onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg"
+                                                                               aria-hidden="true"></i> 返回顶部
+            </a>
+        </div>
+
+    </div>
+</div>
+    
+    <footer id="footer">
+    <div class="footer-left">
+        Copyright &copy; 2025 <i class="fas fa-heart"></i>
+        展荣
+        
+    </div>
+    <!-- <div class="footer-right">
+    <nav>
+      <ul>
+        
+        <li><a href="/">首页</a></li>
+        
+        <li><a href="/archives/">归档</a></li>
+        
+        <li><a href="/categories/">分类</a></li>
+        
+        <li><a href="/tags/">标签</a></li>
+        
+        <li><a href="/about/">关于</a></li>
+        
+        <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </nav>
+  </div> -->
+
+    <div class="footer-custom">
+        Framework by <a href="https://hexo.io" target="_blank">Hexo</a> & Theme by <a
+                href="https://github.com/xuthus5/hexo-theme-cactus" target="_blank">Cactus-CN</a>
+        
+    </div>
+</footer>
+</div>
+<!-- styles -->
+
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css">
+
+
+<link rel="stylesheet" href="https://cdn.staticfile.org/justifiedGallery/3.7.0/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+
+<script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+
+
+<script src="https://cdn.staticfile.org/justifiedGallery/3.7.0/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+    
+<script src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            // copy-btn HTML
+            var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+            btn += '<i class="far fa-clone"></i>';
+            btn += '</span>';
+            // mount it!
+            $(".highlight .code pre").before(btn);
+            var clip = new ClipboardJS('.btn-copy', {
+                target: function (trigger) {
+                    return trigger.nextElementSibling;
+                }
+            });
+            clip.on('success', function (e) {
+                e.trigger.setAttribute('aria-label', "复制成功!");
+                e.clearSelection();
+            })
+        })
+    </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+</body>
+
+</html>

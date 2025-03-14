@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    
+    
+        
+            
+                <link rel="shortcut icon" href="/images/favicon.ico">
+            
+        
+        
+            
+                <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+            
+        
+        
+            
+                <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+            
+        
+    
+    <!-- title -->
+    <title>Git分支管理策略与场景应用</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+SC&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/tonsky/FiraCode@2/distr/fira_code.css" rel="stylesheet">
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+
+    <div id="header-post">
+    <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+    <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+    <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i
+                class="fas fa-chevron-up fa-lg"></i></a>
+    <span id="menu">
+    <span id="nav">
+      <ul>
+          
+              <li><a href="/">首页</a></li>
+          
+              <li><a href="/archives/">归档</a></li>
+          
+              <li><a href="/categories/">分类</a></li>
+          
+              <li><a href="/tags/">标签</a></li>
+          
+              <li><a href="/about/">关于</a></li>
+          
+              <li><a href="/search/">搜索</a></li>
+          
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+          
+              <li><a class="icon" href="/2017/10/16/2017-10-17-%E8%A7%A3%E5%86%B3%E8%AE%BF%E9%97%AEGitHub%E8%AE%BF%E9%97%AE%E6%85%A2%E9%97%AE%E9%A2%98/"><i class="fas fa-chevron-left"
+                                                                           aria-hidden="true"
+                                                                           onmouseover="$('#i-prev').toggle();"
+                                                                           onmouseout="$('#i-prev').toggle();"></i></a></li>
+          
+          
+          <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i
+                          class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();"
+                          onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true"
+                                        onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();"
+                                        onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+    <li><a class="icon"
+           href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2017/10/16/2017-10-16-Git%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86%E7%AD%96%E7%95%A5/&title=Git分支管理策略与场景应用"><i
+                    class="fab fa-qq " aria-hidden="true"></i></a></li>
+    <li><a class="icon"
+           href="https://service.weibo.com/share/share.php?url=http://yoursite.com/2017/10/16/2017-10-16-Git%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86%E7%AD%96%E7%95%A5/&title=Git分支管理策略与场景应用"><i
+                    class="fab fa-weibo " aria-hidden="true"></i></a></li>
+    <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2017/10/16/2017-10-16-Git%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86%E7%AD%96%E7%95%A5/&text=Git分支管理策略与场景应用" target="_blank" rel="noopener"><i
+                    class="fab fa-twitter " aria-hidden="true"></i></a></li>
+    <li><a class="icon" href="mailto:?subject=Git分支管理策略与场景应用&body=Check out this article: http://yoursite.com/2017/10/16/2017-10-16-Git%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86%E7%AD%96%E7%95%A5/"><i
+                    class="fas fa-envelope " aria-hidden="true"></i></a></li>
+</ul>
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#总览"><span class="toc-number">1.</span> <span class="toc-text">总览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#主要分支"><span class="toc-number">2.</span> <span class="toc-text">主要分支</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#辅助分支与对应场景应用"><span class="toc-number">3.</span> <span class="toc-text">辅助分支与对应场景应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#feature-xxx新功能开发使用"><span class="toc-number">3.1.</span> <span class="toc-text">feature-xxx新功能开发使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#release-预发布测试使用"><span class="toc-number">3.2.</span> <span class="toc-text">release 预发布测试使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hofix-xxx-Bug热修复分支"><span class="toc-number">3.3.</span> <span class="toc-text">hofix-xxx Bug热修复分支</span></a></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+<div class="content index py4">
+    
+    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+        
+    <h1 class="posttitle" itemprop="name headline">
+        Git分支管理策略与场景应用
+    </h1>
+
+        <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">
+            展荣
+            
+        </span>
+      </span>
+            
+    <div class="postdate">
+        
+            <time datetime="2017-10-15T16:00:00.000Z"
+                  itemprop="datePublished">2017-10-16</time>
+            
+        
+    </div>
+
+            
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/%E6%97%A5%E5%B8%B8%E5%A1%AB%E5%9D%91/">日常填坑</a>
+    </div>
+
+            
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/git/" rel="tag">git</a>
+    </div>
+
+        </div>
+    </header>
+    
+    <div class="content" itemprop="articleBody">
+        <p>Git的优势在于分支功能。但自身对各个目录的访问权限的限制却有点违背Git的设计初初衷了。如果你真的想要这么做，请移步<a href="https://github.com/sitaramc/gitolite" target="_blank" rel="noopener">gitolite</a>。这里提倡的Git使用方式是组织内部透明，允许任何人查看和查阅代码。保持正确的使用规范来进行分支管理。其次，需要有一个概念是，每个clone下来的都是一个完整的代码库。</p>
+<h2 id="总览">总览</h2>
+<ul>
+<li>master： 发布版本主分支</li>
+<li>dev：日常开发主分支</li>
+<li>feature ：具体功能分支</li>
+<li>release ：master的测试分支</li>
+<li>hotfix ：线上bug分支</li>
+</ul>
+<h2 id="主要分支">主要分支</h2>
+<p>包含master和dev这两个分支放在一起有区别其他分支是因为应该是一直存在的。<br>
+master主要用于经过测试后可用于发布上线的的版本分支。<br>
+dev是开发完成后的功能版本分支，当所有功能开发完成后会合并到dev分支，当dev分支测试完成后，将dev分支合并到master分支。<br>
+其实这样就可以实现基本的团队开发模型。但是在实际开发中，只有这两个分支是肯定不够的。下面考虑下面几个场景</p>
+<h2 id="辅助分支与对应场景应用">辅助分支与对应场景应用</h2>
+<h3 id="feature-xxx新功能开发使用">feature-xxx新功能开发使用</h3>
+<p>场景1：每次开发一个新功能的时候，大多数情况都是需要一些试验性的代码。如果直接在dev环境下进行新功能开发，即便项目拥有很低的耦合性，但是依旧会把原来的版本弄乱。除了试验性的代码外还有很多种情况，比如万一这个功能做到一半，产品经理改需求了（程序和产品有不可调和的矛盾）。这时候那如何解决呢？</p>
+<p>为了解决这个问题，如果在开发的时候从dev上fork一个新分支，进行新功能开发，这就是feature分支，命名上可以加上功能名称标志，方便阅读。就算这个功能需要被砍掉。只要没有合并到dev上就可以直接删除掉。</p>
+<blockquote>
+<p>git branch -D feature-xxx<br>
+-D是强制删除的分支，因为没有合并的分支git是不允许你使用-d来直接删除的。如果已经合并到了dev，版本回退到上一版本也就好了。不过这就是该分支需要关心的啦</p>
+</blockquote>
+<h3 id="release-预发布测试使用">release 预发布测试使用</h3>
+<p>场景2：dev分支开发完成后，到发布期间还需要测试团队A进行一些小的细节测试（并不是重大BUG）。测试期间开发团队又需要继续开发下个版本（程序员黑脸吐槽：版本接版本，版本何其多啊…）。为了不影响待发布的版本，又要继续开发下个版本管理呢?</p>
+<p>该分支从dev分支fork而来。主要是为了发布新版本做准备。在此分支上可以进行一些细微的修改。常见的使用方式是在创建release分支时候根据当前项目版本号规则创建一个release-xxx。而对于这个版本不发布的功能则不需要合并的dev分支上，而是应该在当前版本的dev上创建好了release分支之后，再去合并新的功能分支。这样当release分支测试完毕后，可以合并到master和dev上。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b release-1.2 devlop//从dev中创建一个分支</span><br><span class="line">//...</span><br><span class="line">//允许修改一部分bug，修改工程配置文件的版本号等小问题</span><br><span class="line">//...</span><br><span class="line">git commit -a -m "添加版本号" //提交</span><br><span class="line"></span><br><span class="line">git checkout master//切换到主分支</span><br><span class="line">git merge --no-ff -m "preRelease-1.2" release-1.2//合并到发布上线版本的主分支</span><br><span class="line"></span><br><span class="line">git branch -d release-1.2//确定没有冲突后删除release-1.2分支</span><br><span class="line">git tag -a 1.2 //完成版本合并后 打上标签</span><br></pre></td></tr></table></figure>
+<h3 id="hofix-xxx-Bug热修复分支">hofix-xxx Bug热修复分支</h3>
+<p>场景3：当release预发布版本经过测试后并没有什么bug,于是合并到master并且上线。（大家都懂的，线上总是能给大家惊喜），线上bug出现了。而这个时候dev分支又已经合并了新的feature分支。而且你手头上可能还正在开发新的功能。那么我们该如何进行快速线上bug的修复？</p>
+<p>首先该分支是从master分出来的，这样可以保证和线上环境一样，排除当前不稳定的dev环境。当然，这时候需要提升正确的版本号。修复完成后，需要合并到mater分支和dev分支。<strong>特殊情况：当存在release版本的话，则不需要同步到release版本，然后当release版本完成后再合并到dev分支上</strong>。这样也就保证多了hotfix的修复能合并到master线上版本，也能保证下个版本不会继续再出现这样的BUG。</p>
+<p><strong>参考文章：</strong><br>
+<a href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000" target="_blank" rel="noopener">Git教程</a><br>
+<a href="http://www.ruanyifeng.com/blog/2012/07/git.html" target="_blank" rel="noopener">Git分支管理策略</a></p>
+<p>**Tips：**因为今天不小心手贱把一个文件删除了，然后直接chekout带中文名在bash里头显示的一大串编码真是蛋疼，于是度娘到了下面的这个方法。<br>
+<a href="http://blog.csdn.net/wuzhimang/article/details/52652687" target="_blank" rel="noopener">git 恢复删除的所有文件（含中文）</a></p>
+
+    </div>
+</article>
+
+    <div class="blog-post-comments">
+        <section id="comment">
+            <div id="valine_container" class="valine_thread"></div>
+        </section>
+        <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+        <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+        <script>
+            var GUEST_INFO = ['nick', 'mail', 'link'];
+            var guest_info = 'nick,mail,link'.split(',').filter(function (item) {
+                return GUEST_INFO.indexOf(item) > -1
+            });
+            var notify = 'true' == true;
+            var verify = 'false' == true;
+            var valine = new Valine();
+            valine.init({
+                el: '#valine_container',
+                notify: notify,
+                verify: verify,
+                appId: "yA9rEta0AtnHiiVjV0tHVU95-gzGzoHsz",
+                appKey: "80QovNkdJKrsyXsgRg7UEI0n",
+                placeholder: "Just go go",
+                pageSize: '10',
+                avatar: 'mm',
+                lang: 'zh-cn'
+            })
+        </script>
+    </div>
+
+    
+        <div id="footer-post-container">
+    <div id="footer-post">
+
+        <div id="nav-footer" style="display: none">
+            <ul>
+                
+                    <li><a href="/">首页</a></li>
+                
+                    <li><a href="/archives/">归档</a></li>
+                
+                    <li><a href="/categories/">分类</a></li>
+                
+                    <li><a href="/tags/">标签</a></li>
+                
+                    <li><a href="/about/">关于</a></li>
+                
+                    <li><a href="/search/">搜索</a></li>
+                
+            </ul>
+        </div>
+
+        <div id="toc-footer" style="display: none">
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#总览"><span class="toc-number">1.</span> <span class="toc-text">总览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#主要分支"><span class="toc-number">2.</span> <span class="toc-text">主要分支</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#辅助分支与对应场景应用"><span class="toc-number">3.</span> <span class="toc-text">辅助分支与对应场景应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#feature-xxx新功能开发使用"><span class="toc-number">3.1.</span> <span class="toc-text">feature-xxx新功能开发使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#release-预发布测试使用"><span class="toc-number">3.2.</span> <span class="toc-text">release 预发布测试使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#hofix-xxx-Bug热修复分支"><span class="toc-number">3.3.</span> <span class="toc-text">hofix-xxx Bug热修复分支</span></a></li></ol></li></ol>
+        </div>
+
+        <div id="share-footer" style="display: none">
+            <ul>
+    <li><a class="icon"
+           href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://yoursite.com/2017/10/16/2017-10-16-Git%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86%E7%AD%96%E7%95%A5/&title=Git分支管理策略与场景应用"><i
+                    class="fab fa-qq fa-lg" aria-hidden="true"></i></a></li>
+    <li><a class="icon"
+           href="https://service.weibo.com/share/share.php?url=http://yoursite.com/2017/10/16/2017-10-16-Git%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86%E7%AD%96%E7%95%A5/&title=Git分支管理策略与场景应用"><i
+                    class="fab fa-weibo fa-lg" aria-hidden="true"></i></a></li>
+    <li><a class="icon" href="https://twitter.com/share?url=http://yoursite.com/2017/10/16/2017-10-16-Git%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86%E7%AD%96%E7%95%A5/&text=Git分支管理策略与场景应用" target="_blank" rel="noopener"><i
+                    class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+    <li><a class="icon" href="mailto:?subject=Git分支管理策略与场景应用&body=Check out this article: http://yoursite.com/2017/10/16/2017-10-16-Git%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86%E7%AD%96%E7%95%A5/"><i
+                    class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+        </div>
+
+        <div id="actions-footer">
+            <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i
+                        class="fas fa-bars fa-lg"
+                        aria-hidden="true"></i> 菜单</a>
+            <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i
+                        class="fas fa-list fa-lg"
+                        aria-hidden="true"></i> 目录</a>
+            <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i
+                        class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+            <a id="top" style="display:none" class="icon" href="#"
+               onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg"
+                                                                               aria-hidden="true"></i> 返回顶部
+            </a>
+        </div>
+
+    </div>
+</div>
+    
+    <footer id="footer">
+    <div class="footer-left">
+        Copyright &copy; 2025 <i class="fas fa-heart"></i>
+        展荣
+        
+    </div>
+    <!-- <div class="footer-right">
+    <nav>
+      <ul>
+        
+        <li><a href="/">首页</a></li>
+        
+        <li><a href="/archives/">归档</a></li>
+        
+        <li><a href="/categories/">分类</a></li>
+        
+        <li><a href="/tags/">标签</a></li>
+        
+        <li><a href="/about/">关于</a></li>
+        
+        <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </nav>
+  </div> -->
+
+    <div class="footer-custom">
+        Framework by <a href="https://hexo.io" target="_blank">Hexo</a> & Theme by <a
+                href="https://github.com/xuthus5/hexo-theme-cactus" target="_blank">Cactus-CN</a>
+        
+    </div>
+</footer>
+</div>
+<!-- styles -->
+
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/5.12.1/css/all.min.css">
+
+
+<link rel="stylesheet" href="https://cdn.staticfile.org/justifiedGallery/3.7.0/css/justifiedGallery.min.css">
+
+<!-- jquery -->
+
+<script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+
+
+<script src="https://cdn.staticfile.org/justifiedGallery/3.7.0/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+    
+<script src="https://cdn.staticfile.org/clipboard.js/2.0.6/clipboard.min.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            // copy-btn HTML
+            var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板!\">";
+            btn += '<i class="far fa-clone"></i>';
+            btn += '</span>';
+            // mount it!
+            $(".highlight .code pre").before(btn);
+            var clip = new ClipboardJS('.btn-copy', {
+                target: function (trigger) {
+                    return trigger.nextElementSibling;
+                }
+            });
+            clip.on('success', function (e) {
+                e.trigger.setAttribute('aria-label', "复制成功!");
+                e.clearSelection();
+            })
+        })
+    </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+</body>
+
+</html>
